@@ -1,1 +1,565 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E/MERI · Accueil</title>
+    <!-- Font Awesome pour l'icône d'église et la map -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
 
+        body {
+            background: #f8f5f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        .card {
+            max-width: 1100px;
+            width: 100%;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        /* ===== EN-TÊTE AVEC BANNIÈRE ===== */
+        .hero {
+            background: linear-gradient(145deg, #1e3c4a, #132b36);
+            padding: 2.5rem 2rem 1.8rem;
+            color: white;
+            position: relative;
+        }
+
+        .hero-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .church-name {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .church-name i {
+            font-size: 2.4rem;
+            color: #f5d742;
+            filter: drop-shadow(0 2px 6px rgba(245, 215, 66, 0.3));
+        }
+
+        .church-name h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .church-name h1 small {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 300;
+            opacity: 0.8;
+            letter-spacing: 2px;
+            margin-top: 2px;
+        }
+
+        .sigle-badge {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(4px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            font-weight: 500;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            color: #f5d742;
+        }
+
+        .sigle-badge span {
+            font-weight: 300;
+            color: #e0e7eb;
+            margin-right: 6px;
+        }
+
+        /* ===== ADRESSE & CTA ===== */
+        .address-block {
+            margin-top: 1.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 0.9rem 1.5rem;
+            border-radius: 60px;
+            backdrop-filter: blur(2px);
+        }
+
+        .address {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 1rem;
+            color: #e9edf0;
+        }
+
+        .address i {
+            color: #f5d742;
+            font-size: 1.2rem;
+            width: 1.6rem;
+            text-align: center;
+        }
+
+        .address strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        .address .highlight {
+            background: #f5d742;
+            color: #1e3c4a;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-left: 6px;
+        }
+
+        .btn-location {
+            background: white;
+            color: #1e3c4a;
+            border: none;
+            padding: 0.55rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn-location i {
+            font-size: 1rem;
+        }
+
+        .btn-location:hover {
+            background: #f5d742;
+            transform: scale(1.02);
+            box-shadow: 0 8px 18px rgba(245, 215, 66, 0.3);
+        }
+
+        /* ===== CONTENU PRINCIPAL ===== */
+        .content {
+            padding: 2.2rem 2rem 2.5rem;
+        }
+
+        .welcome-section {
+            margin-bottom: 2.8rem;
+        }
+
+        .welcome-section h2 {
+            font-size: 2rem;
+            font-weight: 500;
+            color: #1e3c4a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-section h2 i {
+            color: #f5b742;
+            font-size: 2rem;
+        }
+
+        .welcome-section p {
+            font-size: 1.1rem;
+            color: #2c3e4f;
+            line-height: 1.6;
+            max-width: 700px;
+            margin-top: 0.25rem;
+        }
+
+        .welcome-section p i {
+            color: #d4a12a;
+            margin: 0 4px;
+        }
+
+        .grid-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            margin-top: 1.2rem;
+        }
+
+        .info-box {
+            background: #f2efe8;
+            border-radius: 1.8rem;
+            padding: 1.4rem 1.8rem;
+            transition: 0.2s;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .info-box:hover {
+            background: #edeadf;
+            transform: translateY(-3px);
+        }
+
+        .info-box h3 {
+            font-size: 1.3rem;
+            color: #1e3c4a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box h3 i {
+            color: #f5b742;
+            width: 1.8rem;
+        }
+
+        .info-box p {
+            color: #2e4a5a;
+            font-size: 0.98rem;
+            line-height: 1.5;
+        }
+
+        .info-box .mini-tag {
+            display: inline-block;
+            background: #1e3c4a;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            margin-top: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        /* ===== LOCALISATION CARD ===== */
+        .map-card {
+            background: #e6e2d7;
+            border-radius: 2rem;
+            padding: 1.5rem 2rem;
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 6px solid #f5d742;
+        }
+
+        .map-card .map-text {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .map-card .map-text i {
+            font-size: 2.4rem;
+            color: #b38b2a;
+        }
+
+        .map-card .map-text div {
+            font-size: 1rem;
+            color: #1f3340;
+        }
+
+        .map-card .map-text div strong {
+            display: block;
+            font-size: 1.2rem;
+            color: #0d222d;
+        }
+
+        .map-card .btn-map {
+            background: #1e3c4a;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .map-card .btn-map:hover {
+            background: #f5d742;
+            color: #1e3c4a;
+            transform: scale(1.03);
+        }
+
+        .map-card .btn-map i {
+            font-size: 1.1rem;
+        }
+
+        /* ===== FOOTER MINI ===== */
+        .footer-note {
+            margin-top: 2.2rem;
+            text-align: center;
+            color: #4f6472;
+            font-size: 0.85rem;
+            border-top: 1px solid #ddd8cd;
+            padding-top: 1.8rem;
+            letter-spacing: 0.3px;
+        }
+
+        .footer-note i {
+            color: #d4a12a;
+            margin: 0 4px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 750px) {
+            .hero {
+                padding: 1.8rem 1.2rem;
+            }
+            .church-name h1 {
+                font-size: 1.5rem;
+            }
+            .sigle-badge {
+                font-size: 1rem;
+                padding: 0.3rem 0.9rem;
+            }
+            .address-block {
+                flex-direction: column;
+                align-items: stretch;
+                border-radius: 30px;
+                gap: 0.8rem;
+                padding: 1rem 1.2rem;
+            }
+            .btn-location {
+                justify-content: center;
+            }
+            .grid-info {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .content {
+                padding: 1.5rem 1.2rem;
+            }
+            .map-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1.2rem;
+            }
+            .map-card .btn-map {
+                width: 100%;
+                justify-content: center;
+            }
+            .welcome-section h2 {
+                font-size: 1.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .sigle-badge {
+                align-self: flex-start;
+            }
+        }
+
+        /* petite animation JS */
+        .toast-message {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #1e3c4a;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: 0.25s ease;
+            pointer-events: none;
+            z-index: 999;
+            border-left: 6px solid #f5d742;
+            backdrop-filter: blur(4px);
+        }
+        .toast-message.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        .toast-message i {
+            margin-right: 10px;
+            color: #f5d742;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- EN-TÊTE HERO -->
+    <div class="hero">
+        <div class="hero-top">
+            <div class="church-name">
+                <i class="fas fa-church"></i>
+                <h1>E/MERI <small>Église des Ministères, d'Évangélisation, de Réveil et d'Intercession</small></h1>
+            </div>
+            <div class="sigle-badge">
+                <span>✝</span> E/MERI
+            </div>
+        </div>
+
+        <!-- ADRESSE + BOUTON -->
+        <div class="address-block">
+            <div class="address">
+                <i class="fas fa-map-pin"></i>
+                <span><strong>Bunkeya</strong> · coin boulevard LDK</span>
+                <span class="highlight">en face du supermarché S&K</span>
+            </div>
+            <button class="btn-location" id="showLocationBtn">
+                <i class="fas fa-directions"></i> Voir l'emplacement
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENU PRINCIPAL -->
+    <div class="content">
+        <!-- SECTION ACCUEIL -->
+        <div class="welcome-section">
+            <h2>
+                <i class="fas fa-hands-praying"></i> Bienvenue à E/MERI
+            </h2>
+            <p>
+                <i class="fas fa-fire"></i> Une communauté vivante, centrée sur l'évangélisation, le réveil et l'intercession. 
+                Rejoignez-nous pour célébrer, grandir dans la foi et servir ensemble.
+            </p>
+        </div>
+
+        <!-- GRILLE INFORMATIONS -->
+        <div class="grid-info">
+            <div class="info-box">
+                <h3><i class="fas fa-bible"></i> Ministères</h3>
+                <p>Enseignement, louange, jeunesse, intercession et actions sociales. Chaque ministère est animé par la grâce et la parole.</p>
+                <span class="mini-tag">Évangélisation</span>
+            </div>
+            <div class="info-box">
+                <h3><i class="fas fa-calendar-alt"></i> Réveil & Intercession</h3>
+                <p>Nos veillées de prière et cultes de réveil sont ouverts à tous. Venez expérimenter la puissance de l'Esprit.</p>
+                <span class="mini-tag">🔥 Réveil</span>
+            </div>
+        </div>
+
+        <!-- CARTE LOCALISATION (SIMULÉE) -->
+        <div class="map-card">
+            <div class="map-text">
+                <i class="fas fa-store-alt"></i>
+                <div>
+                    <strong>Supermarché S&K</strong>
+                    <span>Boulevard LDK, Bunkeya · face à l'église</span>
+                </div>
+            </div>
+            <button class="btn-map" id="mapTriggerBtn">
+                <i class="fas fa-map-marked-alt"></i> Itinéraire
+            </button>
+        </div>
+
+        <div class="footer-note">
+            <i class="fas fa-cross"></i> E/MERI – Église des Ministères, d'Évangélisation, de Réveil et d'Intercession 
+            <i class="fas fa-heart" style="color:#c0392b; margin:0 4px;"></i> Bunkeya, LDK
+        </div>
+    </div>
+</div>
+
+<!-- TOAST NOTIFICATION (JS) -->
+<div id="toastMessage" class="toast-message">
+    <i class="fas fa-check-circle"></i> <span id="toastText">Bienvenue à E/MERI</span>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // Éléments
+        const showLocationBtn = document.getElementById('showLocationBtn');
+        const mapTriggerBtn = document.getElementById('mapTriggerBtn');
+        const toast = document.getElementById('toastMessage');
+        const toastText = document.getElementById('toastText');
+
+        // Fonction pour afficher le toast avec un message personnalisé
+        function showToast(message, duration = 2800) {
+            toastText.textContent = message;
+            toast.classList.add('show');
+            // Clear tout timeout précédent
+            if (window.toastTimeout) clearTimeout(window.toastTimeout);
+            window.toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        // Action : "Voir l'emplacement" (bouton dans l'adresse)
+        showLocationBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showToast('📍 Bunkeya, coin boulevard LDK · face supermarché S&K', 3200);
+            // Simuler un petit effet haptique (vibration si supporté)
+            if (navigator.vibrate) navigator.vibrate(20);
+        });
+
+        // Action : "Itinéraire" (bouton dans la carte)
+        mapTriggerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showToast('🧭 Itinéraire vers E/MERI · en face du supermarché S&K', 3400);
+            if (navigator.vibrate) navigator.vibrate(15);
+        });
+
+        // Petit message de bienvenue au chargement (après 1s)
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                showToast('✝️ Bienvenue à E/MERI · Que Dieu vous bénisse !', 3000);
+            }, 700);
+        });
+
+        // Option : clic sur la carte ou l'adresse (pour améliorer l'UX)
+        const addressBlock = document.querySelector('.address-block');
+        if (addressBlock) {
+            addressBlock.addEventListener('click', function(e) {
+                // éviter de déclencher deux fois si on clique sur le bouton
+                if (e.target.closest('.btn-location')) return;
+                showToast('📍 Bunkeya, boulevard LDK · en face du supermarché S&K', 2800);
+            });
+        }
+
+        // Clic sur la map-card (sauf sur le bouton)
+        const mapCard = document.querySelector('.map-card');
+        if (mapCard) {
+            mapCard.addEventListener('click', function(e) {
+                if (e.target.closest('.btn-map')) return;
+                showToast('🗺️ E/MERI · Bunkeya, LDK (face S&K)', 2800);
+            });
+        }
+
+        // Effet de survol sur les boutons (rien de spécial, mais maintenu pour le style)
+        console.log('E/MERI – Page d\'accueil prête.');
+    })();
+</script>
+
+</body>
+</html>
