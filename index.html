@@ -1,604 +1,785 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E/MERI · Église des Ministères</title>
-    <!-- Font Awesome 6 (gratuit) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E/MERI · Église des Ministères</title>
+  <!-- Font Awesome 6 (gratuit) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    /* ---------- RESET & BASE ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            background: #f5f2eb;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 1.5rem;
-        }
+    body {
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+      background: #f9f7f2;
+      color: #1e2a36;
+      line-height: 1.5;
+    }
 
-        .card {
-            max-width: 1200px;
-            width: 100%;
-            background: white;
-            border-radius: 2.8rem;
-            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            transition: 0.2s;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
 
-        /* ===== HERO AVEC IMAGE DE FOND ===== */
-        .hero {
-            position: relative;
-            background: #0f262f; /* fallback */
-            min-height: 340px;
-            display: flex;
-            align-items: flex-end;
-            padding: 2.2rem 2rem 1.8rem;
-            color: white;
-            isolation: isolate;
-        }
+    /* ---------- HEADER / NAV (inspiration SORA) ---------- */
+    header {
+      background: #0f1f26;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
 
-        /* image de fond (simulée avec un dégradé + pattern + pseudo-élément) */
-        .hero::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: 
-                linear-gradient(135deg, rgba(15, 38, 47, 0.6) 0%, rgba(0, 0, 0, 0.5) 100%),
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600"><rect fill="%231e3c4a" width="800" height="600"/><circle cx="200" cy="150" r="120" fill="%23f5d742" opacity="0.08"/><circle cx="650" cy="400" r="180" fill="%23f5d742" opacity="0.06"/><path d="M0 450 L800 350 L800 600 L0 600 Z" fill="%23f5d742" opacity="0.04"/><rect x="80" y="200" width="50" height="80" fill="%23f5d742" opacity="0.03" /><rect x="700" y="100" width="40" height="60" fill="%23f5d742" opacity="0.03" /></svg>');
-            background-size: cover, cover;
-            background-blend-mode: overlay;
-            z-index: 0;
-        }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
 
-        /* vidéo de substitution (iframe) – cachée par défaut, affichée via JS */
-        .video-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 2;
-            background: #0f1f26;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        .video-overlay iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .video-overlay.active {
-            display: flex;
-        }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: white;
+      text-decoration: none;
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
 
-        .hero-content {
-            position: relative;
-            z-index: 3;
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 1.2rem;
-        }
+    .logo i {
+      color: #f5d742;
+      font-size: 2rem;
+    }
 
-        .hero-text {
-            max-width: 700px;
-        }
+    .logo span {
+      font-weight: 300;
+      font-size: 0.9rem;
+      opacity: 0.7;
+      display: block;
+      letter-spacing: 1px;
+    }
 
-        .hero-text .church-name {
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            margin-bottom: 0.5rem;
-        }
-        .hero-text .church-name i {
-            font-size: 2.2rem;
-            color: #f5d742;
-            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
-        }
-        .hero-text .church-name h1 {
-            font-size: 2.2rem;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-            line-height: 1.2;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        .hero-text .church-name h1 small {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 300;
-            opacity: 0.9;
-            letter-spacing: 2px;
-            margin-top: 2px;
-        }
+    nav {
+      display: flex;
+      gap: 1.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
 
-        .hero-verse {
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(6px);
-            padding: 0.7rem 1.5rem;
-            border-radius: 60px;
-            display: inline-block;
-            border-left: 4px solid #f5d742;
-            font-size: 1.05rem;
-            font-style: italic;
-            margin-top: 0.3rem;
-            max-width: 90%;
-        }
-        .hero-verse i {
-            color: #f5d742;
-            margin-right: 8px;
-        }
-        .hero-verse span {
-            font-weight: 400;
-            opacity: 0.9;
-            font-style: normal;
-            font-size: 0.85rem;
-            margin-left: 6px;
-        }
+    nav a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+    }
 
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.9rem;
-            align-items: center;
-            margin-top: 0.2rem;
-        }
+    nav a:hover {
+      color: #f5d742;
+      border-bottom-color: #f5d742;
+    }
 
-        .btn-primary, .btn-outline-light {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0.7rem 1.8rem;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
-            transition: 0.2s;
-            text-decoration: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .btn-primary {
-            background: #f5d742;
-            color: #1a2f39;
-        }
-        .btn-primary:hover {
-            background: #ffdf5e;
-            transform: scale(1.02);
-            box-shadow: 0 8px 20px rgba(245, 215, 66, 0.4);
-        }
-        .btn-outline-light {
-            background: rgba(255,255,255,0.12);
-            backdrop-filter: blur(4px);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .btn-outline-light:hover {
-            background: rgba(255,255,255,0.25);
-            transform: scale(1.02);
-        }
+    .btn-nav {
+      background: #f5d742;
+      color: #0f1f26;
+      padding: 0.5rem 1.6rem;
+      border-radius: 60px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
 
-        /* ===== CONTENU ===== */
-        .content {
-            padding: 2.2rem 2.2rem 2.5rem;
-            background: white;
-        }
+    .btn-nav:hover {
+      background: #ffe066;
+      transform: scale(1.03);
+    }
 
-        /* grille : vision + horaires + rejoindre */
-        .grid-highlight {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
+    /* ---------- HERO (comme SORA) ---------- */
+    .hero {
+      background: linear-gradient(145deg, #132b36, #0a1a22);
+      color: white;
+      padding: 4rem 0 3.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .vision-box {
-            background: #f3efe6;
-            border-radius: 2rem;
-            padding: 1.5rem 2rem;
-            border-left: 8px solid #f5d742;
-        }
-        .vision-box h3 {
-            font-size: 1.5rem;
-            color: #1e3c4a;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 0.5rem;
-        }
-        .vision-box h3 i {
-            color: #d4a12a;
-        }
-        .vision-box p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #1f3340;
-        }
-        .vision-box .verse-ref {
-            display: inline-block;
-            margin-top: 0.5rem;
-            background: #1e3c4a;
-            color: white;
-            padding: 0.2rem 1.2rem;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-        }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><circle cx="200" cy="150" r="140" fill="%23f5d742" opacity="0.04"/><circle cx="700" cy="400" r="200" fill="%23f5d742" opacity="0.03"/></svg>');
+      background-size: cover;
+      pointer-events: none;
+    }
 
-        .schedule-box {
-            background: #ffffff;
-            border-radius: 2rem;
-            padding: 1.5rem 2rem;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.04);
-            border: 1px solid #e9e3d6;
-        }
-        .schedule-box h3 {
-            font-size: 1.5rem;
-            color: #1e3c4a;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 1rem;
-        }
-        .schedule-box h3 i {
-            color: #f5b742;
-        }
-        .schedule-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed #e0d9cb;
-        }
-        .schedule-item:last-child {
-            border-bottom: none;
-        }
-        .schedule-item .day {
-            font-weight: 600;
-            color: #1a2f39;
-        }
-        .schedule-item .time {
-            color: #3f5a66;
-            font-weight: 500;
-        }
-        .schedule-item .time i {
-            margin-right: 6px;
-            color: #b38b2a;
-            font-size: 0.8rem;
-        }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 850px;
+      margin: 0 auto;
+    }
 
-        .join-section {
-            grid-column: 1 / -1;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(145deg, #1e3c4a, #142d38);
-            border-radius: 3rem;
-            padding: 1.4rem 2.2rem;
-            color: white;
-            gap: 1rem;
-        }
-        .join-section .join-text {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .join-section .join-text i {
-            font-size: 2.2rem;
-            color: #f5d742;
-        }
-        .join-section .join-text div {
-            font-size: 1.1rem;
-        }
-        .join-section .join-text div strong {
-            display: block;
-            font-size: 1.4rem;
-            font-weight: 600;
-        }
-        .btn-join {
-            background: #f5d742;
-            color: #1a2f39;
-            border: none;
-            padding: 0.8rem 2.5rem;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-        }
-        .btn-join:hover {
-            background: #ffdf5e;
-            transform: scale(1.03);
-            box-shadow: 0 10px 28px rgba(245, 215, 66, 0.3);
-        }
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 0.5rem;
+    }
 
-        /* ===== FOOTER ===== */
-        .footer-note {
-            margin-top: 2rem;
-            text-align: center;
-            color: #5b6f7c;
-            font-size: 0.9rem;
-            border-top: 1px solid #e2dcd0;
-            padding-top: 1.8rem;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 0.8rem 1.8rem;
-        }
-        .footer-note i {
-            color: #d4a12a;
-            margin: 0 4px;
-        }
-        .footer-note .address-mini {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
+    .hero h1 i {
+      color: #f5d742;
+      margin-right: 0.5rem;
+    }
 
-        /* ===== TOAST ===== */
-        .toast-message {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%) scale(0.9);
-            background: #1e3c4a;
-            color: white;
-            padding: 0.8rem 2.2rem;
-            border-radius: 60px;
-            font-weight: 500;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
-            opacity: 0;
-            transition: 0.25s ease;
-            pointer-events: none;
-            z-index: 999;
-            border-left: 6px solid #f5d742;
-            backdrop-filter: blur(4px);
-        }
-        .toast-message.show {
-            opacity: 1;
-            transform: translateX(-50%) scale(1);
-        }
-        .toast-message i {
-            margin-right: 10px;
-            color: #f5d742;
-        }
+    .hero .sub {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      font-weight: 300;
+      margin-bottom: 0.8rem;
+    }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 800px) {
-            .hero {
-                min-height: 280px;
-                padding: 1.5rem;
-            }
-            .hero-text .church-name h1 {
-                font-size: 1.7rem;
-            }
-            .grid-highlight {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            .join-section {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 1.5rem;
-            }
-            .btn-join {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-        @media (max-width: 550px) {
-            .hero-content {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .hero-actions {
-                justify-content: stretch;
-            }
-            .hero-actions .btn-primary,
-            .hero-actions .btn-outline-light {
-                justify-content: center;
-                flex: 1;
-            }
-            .hero-verse {
-                font-size: 0.95rem;
-                padding: 0.4rem 1rem;
-            }
-        }
-    </style>
+    .hero .verse {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(4px);
+      display: inline-block;
+      padding: 0.5rem 2rem;
+      border-radius: 60px;
+      border-left: 4px solid #f5d742;
+      font-style: italic;
+      font-size: 1.1rem;
+      margin: 0.8rem 0 1.5rem;
+    }
+
+    .hero .verse span {
+      font-style: normal;
+      opacity: 0.7;
+      font-size: 0.9rem;
+      margin-left: 8px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn-primary {
+      background: #f5d742;
+      color: #0f1f26;
+      padding: 0.8rem 2.5rem;
+      border-radius: 60px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      box-shadow: 0 6px 18px rgba(245, 215, 66, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: #ffe066;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(245, 215, 66, 0.35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: white;
+      padding: 0.8rem 2.5rem;
+      border-radius: 60px;
+      font-weight: 600;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #f5d742;
+      transform: translateY(-3px);
+    }
+
+    /* ---------- SECTIONS (style SORA) ---------- */
+    section {
+      padding: 4rem 0;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #0f1f26;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: #4a5f6b;
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
+      font-size: 1.1rem;
+    }
+
+    /* ---- Grille des ministères / services ---- */
+    .grid-services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 2rem;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+      text-align: center;
+      transition: 0.25s;
+      border: 1px solid #eeeae0;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+      border-color: #f5d742;
+    }
+
+    .service-card i {
+      font-size: 2.8rem;
+      color: #f5b742;
+      margin-bottom: 1rem;
+    }
+
+    .service-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .service-card p {
+      color: #3d535f;
+      font-size: 0.95rem;
+    }
+
+    /* ---- HORAIRES (carte) ---- */
+    .schedule-card {
+      background: white;
+      border-radius: 2rem;
+      padding: 2rem 2.5rem;
+      max-width: 700px;
+      margin: 0 auto;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+      border: 1px solid #eeeae0;
+    }
+
+    .schedule-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid #f0ebe0;
+    }
+
+    .schedule-item:last-child {
+      border-bottom: none;
+    }
+
+    .schedule-item .day {
+      font-weight: 600;
+      color: #0f1f26;
+    }
+
+    .schedule-item .time {
+      color: #3d535f;
+    }
+
+    .schedule-item .time i {
+      color: #f5b742;
+      margin-right: 6px;
+      width: 1.2rem;
+    }
+
+    /* ---- TÉMOIGNAGES (comme SORA) ---- */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .testimonial {
+      background: white;
+      border-radius: 2rem;
+      padding: 1.8rem 1.8rem 1.5rem;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.03);
+      border: 1px solid #eeeae0;
+    }
+
+    .testimonial .stars {
+      color: #f5b742;
+      letter-spacing: 3px;
+      margin-bottom: 0.5rem;
+    }
+
+    .testimonial p {
+      font-style: italic;
+      color: #1e2a36;
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .testimonial .author {
+      font-weight: 600;
+      color: #0f1f26;
+    }
+
+    .testimonial .role {
+      font-size: 0.85rem;
+      color: #5a707e;
+    }
+
+    /* ---- BANNIÈRE D'APPEL (comme SORA) ---- */
+    .cta-banner {
+      background: linear-gradient(145deg, #0f1f26, #1a3340);
+      color: white;
+      border-radius: 3rem;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .cta-banner .cta-text {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .cta-banner .cta-text i {
+      font-size: 2.8rem;
+      color: #f5d742;
+    }
+
+    .cta-banner .cta-text div {
+      font-size: 1.1rem;
+    }
+
+    .cta-banner .cta-text div strong {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    .btn-cta {
+      background: #f5d742;
+      color: #0f1f26;
+      border: none;
+      padding: 0.9rem 2.8rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 6px 18px rgba(245, 215, 66, 0.2);
+    }
+
+    .btn-cta:hover {
+      background: #ffe066;
+      transform: scale(1.02);
+    }
+
+    /* ---- FOOTER (comme SORA) ---- */
+    footer {
+      background: #0f1f26;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 2.5rem 0 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-grid h4 {
+      color: white;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-grid p, .footer-grid a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    .footer-grid a:hover {
+      color: #f5d742;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .footer-bottom i {
+      color: #f5d742;
+      margin: 0 4px;
+    }
+
+    /* ---- TOAST (feedback) ---- */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) scale(0.95);
+      background: #0f1f26;
+      color: white;
+      padding: 0.8rem 2.2rem;
+      border-radius: 60px;
+      font-weight: 500;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transition: 0.3s ease;
+      pointer-events: none;
+      z-index: 999;
+      border-left: 6px solid #f5d742;
+      backdrop-filter: blur(4px);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    .toast i {
+      margin-right: 10px;
+      color: #f5d742;
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+      .hero .sub {
+        font-size: 1rem;
+      }
+      .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+      nav {
+        justify-content: center;
+      }
+      .cta-banner {
+        flex-direction: column;
+        text-align: center;
+      }
+      .cta-banner .cta-text {
+        flex-direction: column;
+      }
+      .schedule-card {
+        padding: 1.5rem;
+      }
+      .section-title {
+        font-size: 1.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 1.9rem;
+      }
+      .hero-buttons .btn-primary,
+      .hero-buttons .btn-outline {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="card">
-    <!-- ===== HERO avec image de fond ET vidéo superposée ===== -->
-    <div class="hero" id="heroSection">
-        <!-- Vidéo en overlay (masquée par défaut) -->
-        <div class="video-overlay" id="videoOverlay">
-            <iframe id="liveVideo" src="https://www.youtube.com/embed/3yWzI2ba_2w?autoplay=1&mute=1&controls=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
 
-        <div class="hero-content">
-            <div class="hero-text">
-                <div class="church-name">
-                    <i class="fas fa-church"></i>
-                    <h1>E/MERI <small>Église des Ministères, d'Évangélisation, de Réveil et d'Intercession</small></h1>
-                </div>
-                <div class="hero-verse">
-                    <i class="fas fa-quote-left"></i> « Allez, faites de toutes les nations des disciples » 
-                    <span>— Matthieu 28:19</span>
-                </div>
-            </div>
-            <div class="hero-actions">
-                <button class="btn-primary" id="joinNowBtn"><i class="fas fa-user-plus"></i> Nous rejoindre</button>
-                <button class="btn-outline-light" id="liveBtn"><i class="fas fa-video"></i> Culte en direct</button>
-            </div>
-        </div>
+  <!-- ===== HEADER (sticky) ===== -->
+  <header>
+    <div class="container header-inner">
+      <a href="#" class="logo">
+        <i class="fas fa-church"></i>
+        E/MERI
+        <span>Église des Ministères</span>
+      </a>
+      <nav>
+        <a href="#ministères">Ministères</a>
+        <a href="#horaires">Horaires</a>
+        <a href="#témoignages">Témoignages</a>
+        <button class="btn-nav" id="navJoinBtn"><i class="fas fa-user-plus"></i> Rejoindre</button>
+      </nav>
     </div>
+  </header>
 
-    <!-- ===== CONTENU PRINCIPAL ===== -->
-    <div class="content">
-        <div class="grid-highlight">
-            <!-- VISION / VERSET -->
-            <div class="vision-box">
-                <h3><i class="fas fa-scroll"></i> Notre vision</h3>
-                <p>« Une Église missionnaire, animée par le réveil et l'intercession, pour transformer notre génération par l'Évangile. »</p>
-                <span class="verse-ref"><i class="fas fa-bible"></i> Ésaïe 61:1</span>
-            </div>
-
-            <!-- HORAIRES DES CULTES -->
-            <div class="schedule-box">
-                <h3><i class="fas fa-clock"></i> Horaires des cultes</h3>
-                <div class="schedule-item">
-                    <span class="day"><i class="fas fa-calendar-day"></i> Dimanche</span>
-                    <span class="time"><i class="fas fa-hourglass-start"></i> 8h30 · 10h30 · 16h00</span>
-                </div>
-                <div class="schedule-item">
-                    <span class="day"><i class="fas fa-calendar-day"></i> Mercredi</span>
-                    <span class="time"><i class="fas fa-fire"></i> Réveil · 18h30</span>
-                </div>
-                <div class="schedule-item">
-                    <span class="day"><i class="fas fa-calendar-day"></i> Vendredi</span>
-                    <span class="time"><i class="fas fa-pray"></i> Intercession · 19h00</span>
-                </div>
-                <div class="schedule-item" style="border-bottom: none; padding-bottom: 0;">
-                    <span class="day"><i class="fas fa-calendar-day"></i> Samedi</span>
-                    <span class="time"><i class="fas fa-users"></i> Jeunesse · 16h00</span>
-                </div>
-            </div>
-
-            <!-- BOUTON REJOINDRE / SUIVRE EN DIRECT (grand) -->
-            <div class="join-section">
-                <div class="join-text">
-                    <i class="fas fa-hand-holding-heart"></i>
-                    <div>
-                        <strong>Prêt à nous rejoindre ?</strong>
-                        <span>Venez vivre l'expérience E/MERI · cultes, prière et fraternité</span>
-                    </div>
-                </div>
-                <button class="btn-join" id="bigJoinBtn">
-                    <i class="fas fa-arrow-right"></i> Nous rejoindre
-                </button>
-            </div>
-        </div>
-
-        <!-- FOOTER avec adresse -->
-        <div class="footer-note">
-            <span class="address-mini"><i class="fas fa-map-pin"></i> Bunkeya, coin boulevard LDK · en face du supermarché S&K</span>
-            <span><i class="fas fa-phone-alt"></i> +243 999 999 999</span>
-            <span><i class="fas fa-envelope"></i> contact@emeri.org</span>
-            <span><i class="fas fa-cross"></i> E/MERI · Église des Ministères</span>
-        </div>
+  <!-- ===== HERO (grande image / vidéo stylisée) ===== -->
+  <section class="hero">
+    <div class="container hero-content">
+      <h1><i class="fas fa-fire"></i> E/MERI</h1>
+      <p class="sub">Église des Ministères, d'Évangélisation, de Réveil et d'Intercession</p>
+      <div class="verse">
+        <i class="fas fa-quote-left"></i> « Allez, faites de toutes les nations des disciples » 
+        <span>— Matthieu 28:19</span>
+      </div>
+      <div class="hero-buttons">
+        <button class="btn-primary" id="heroJoinBtn"><i class="fas fa-arrow-right"></i> Nous rejoindre</button>
+        <button class="btn-outline" id="liveBtn"><i class="fas fa-video"></i> Culte en direct</button>
+      </div>
     </div>
-</div>
+  </section>
 
-<!-- TOAST -->
-<div id="toastMessage" class="toast-message">
-    <i class="fas fa-check-circle"></i> <span id="toastText">Message</span>
-</div>
+  <!-- ===== MINISTÈRES (services) ===== -->
+  <section id="ministères">
+    <div class="container">
+      <h2 class="section-title">Nos ministères</h2>
+      <p class="section-sub">Des services pour grandir dans la foi, servir et toucher notre génération.</p>
+      <div class="grid-services">
+        <div class="service-card">
+          <i class="fas fa-bible"></i>
+          <h3>Enseignement</h3>
+          <p>Étude biblique, formation et disciples pour une foi solide et enracinée.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-music"></i>
+          <h3>Louange & Adoration</h3>
+          <p>Une équipe passionnée qui conduit la célébration dans l'onction et la joie.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-hands-praying"></i>
+          <h3>Intercession</h3>
+          <p>Des veillées de prière et des chaînes d'intercession pour la nation.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-users"></i>
+          <h3>Jeunesse</h3>
+          <p>Un espace dynamique pour les jeunes, avec des rencontres et des camps.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-hand-holding-heart"></i>
+          <h3>Action sociale</h3>
+          <p>Visites, aide aux démunis et soutien aux familles dans le besoin.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-globe-africa"></i>
+          <h3>Évangélisation</h3>
+          <p>Missions locales et internationales pour proclamer l'Évangile.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<script>
+  <!-- ===== HORAIRES ===== -->
+  <section id="horaires" style="background: #f5f2eb;">
+    <div class="container">
+      <h2 class="section-title">Horaires des cultes</h2>
+      <p class="section-sub">Rejoignez-nous pour ces moments de grâce et de communion.</p>
+      <div class="schedule-card">
+        <div class="schedule-item">
+          <span class="day"><i class="fas fa-calendar-day"></i> Dimanche</span>
+          <span class="time"><i class="fas fa-hourglass-start"></i> 8h30 · 10h30 · 16h00</span>
+        </div>
+        <div class="schedule-item">
+          <span class="day"><i class="fas fa-calendar-day"></i> Mercredi</span>
+          <span class="time"><i class="fas fa-fire"></i> Réveil · 18h30</span>
+        </div>
+        <div class="schedule-item">
+          <span class="day"><i class="fas fa-calendar-day"></i> Vendredi</span>
+          <span class="time"><i class="fas fa-pray"></i> Intercession · 19h00</span>
+        </div>
+        <div class="schedule-item">
+          <span class="day"><i class="fas fa-calendar-day"></i> Samedi</span>
+          <span class="time"><i class="fas fa-users"></i> Jeunesse · 16h00</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TÉMOIGNAGES (comme SORA) ===== -->
+  <section id="témoignages">
+    <div class="container">
+      <h2 class="section-title">Ce qu'ils disent de E/MERI</h2>
+      <p class="section-sub">Des vies transformées par la puissance de Dieu et la communion fraternelle.</p>
+      <div class="testimonials-grid">
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p>« Une église où l'on se sent vraiment accueilli. La puissance de Dieu se manifeste et la parole est pure. »</p>
+          <div class="author">David Mbemba</div>
+          <div class="role">Membre actif</div>
+        </div>
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p>« J'ai retrouvé la joie de mon salut à E/MERI. Les veillées de réveil ont changé ma vie spirituelle. »</p>
+          <div class="author">Grace Tshibanda</div>
+          <div class="role">Jeunesse</div>
+        </div>
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p>« Une communauté soudée, des pasteurs proches du peuple. E/MERI est une bénédiction pour notre ville. »</p>
+          <div class="author">Jean-Claude K.</div>
+          <div class="role">Visiteur régulier</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BANNIÈRE CTA (comme SORA) ===== -->
+  <section style="padding-top: 0;">
+    <div class="container">
+      <div class="cta-banner">
+        <div class="cta-text">
+          <i class="fas fa-hand-holding-heart"></i>
+          <div>
+            <strong>Prêt à nous rejoindre ?</strong>
+            <span>Venez vivre l'expérience E/MERI · Un lieu de réveil et de famille.</span>
+          </div>
+        </div>
+        <button class="btn-cta" id="bigJoinBtn"><i class="fas fa-arrow-right"></i> Nous rejoindre</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER (comme SORA) ===== -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>E/MERI</h4>
+          <p>Église des Ministères, d'Évangélisation, de Réveil et d'Intercession</p>
+          <p><i class="fas fa-map-pin" style="color:#f5d742;"></i> Bunkeya, coin boulevard LDK</p>
+          <p><i class="fas fa-store" style="color:#f5d742;"></i> En face du supermarché S&K</p>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <p><i class="fas fa-phone-alt"></i> +243 999 999 999</p>
+          <p><i class="fas fa-envelope"></i> contact@emeri.org</p>
+          <p><i class="fas fa-clock"></i> Accueil : 8h – 20h</p>
+        </div>
+        <div>
+          <h4>Suivez-nous</h4>
+          <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+          <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+          <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <i class="fas fa-cross"></i> E/MERI · Église des Ministères · Bunkeya, RDC
+        <span style="display:block; margin-top:6px; opacity:0.6; font-size:0.8rem;">© 2026 — Toute grâce soit à Dieu</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast" class="toast">
+    <i class="fas fa-check-circle"></i> <span id="toastMsg">Bienvenue</span>
+  </div>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
     (function() {
-        "use strict";
+      "use strict";
 
-        // Éléments
-        const hero = document.getElementById('heroSection');
-        const videoOverlay = document.getElementById('videoOverlay');
-        const liveBtn = document.getElementById('liveBtn');
-        const joinNowBtn = document.getElementById('joinNowBtn');
-        const bigJoinBtn = document.getElementById('bigJoinBtn');
-        const toast = document.getElementById('toastMessage');
-        const toastText = document.getElementById('toastText');
+      // Éléments
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      let toastTimer = null;
 
-        let toastTimeout = null;
-        let videoActive = false;
+      function showToast(message, duration = 3200) {
+        toastMsg.textContent = message;
+        toast.classList.add('show');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.remove('show');
+        }, duration);
+      }
 
-        // Fonction Toast
-        function showToast(message, duration = 3000) {
-            toastText.textContent = message;
-            toast.classList.add('show');
-            if (toastTimeout) clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, duration);
-        }
+      // Boutons "Nous rejoindre"
+      const joinBtns = [
+        document.getElementById('navJoinBtn'),
+        document.getElementById('heroJoinBtn'),
+        document.getElementById('bigJoinBtn')
+      ];
 
-        // Bascule vidéo (culte en direct)
-        function toggleVideo(forceState) {
-            if (typeof forceState === 'boolean') {
-                if (forceState === true) {
-                    videoOverlay.classList.add('active');
-                    videoActive = true;
-                } else {
-                    videoOverlay.classList.remove('active');
-                    videoActive = false;
-                }
-                return;
-            }
-            // toggle
-            if (videoActive) {
-                videoOverlay.classList.remove('active');
-                videoActive = false;
-                showToast('📺 Vidéo fermée', 2000);
-            } else {
-                videoOverlay.classList.add('active');
-                videoActive = true;
-                showToast('▶️ Culte en direct · E/MERI', 2800);
-            }
-        }
-
-        // Événements : bouton "Culte en direct"
-        liveBtn.addEventListener('click', function(e) {
+      joinBtns.forEach(btn => {
+        if (btn) {
+          btn.addEventListener('click', function(e) {
             e.preventDefault();
-            toggleVideo();
-            if (navigator.vibrate) navigator.vibrate(15);
-        });
-
-        // Clic sur le hero pour fermer la vidéo (si active)
-        hero.addEventListener('click', function(e) {
-            if (videoActive && !e.target.closest('.video-overlay') && !e.target.closest('.hero-actions')) {
-                toggleVideo(false);
-                showToast('Vidéo fermée', 1800);
-            }
-        });
-
-        // Boutons "Nous rejoindre"
-        function handleJoin() {
             showToast('🙏 Bienvenue à E/MERI · Nous vous attendons avec joie !', 3500);
             if (navigator.vibrate) navigator.vibrate(20);
+          });
         }
+      });
 
-        joinNowBtn.addEventListener('click', handleJoin);
-        bigJoinBtn.addEventListener('click', handleJoin);
-
-        // Petit toast de bienvenue
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                showToast('✝️ Bienvenue à E/MERI · Que Dieu vous bénisse !', 3200);
-            }, 600);
+      // Bouton "Culte en direct" (simulation)
+      const liveBtn = document.getElementById('liveBtn');
+      if (liveBtn) {
+        liveBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          showToast('▶️ Culte en direct · Rejoignez-nous sur notre chaîne YouTube !', 3500);
+          if (navigator.vibrate) navigator.vibrate(15);
         });
+      }
 
-        // Si on clique sur le bouton "Nous rejoindre" dans le hero, on scroll un peu (amélioration UX)
-        // (optionnel) on fait un scroll léger vers le bas
-        const bigJoinSection = document.querySelector('.join-section');
-        if (bigJoinSection) {
-            joinNowBtn.addEventListener('click', function() {
-                setTimeout(() => {
-                    bigJoinSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 400);
-            });
-        }
+      // Navigation douce (amélioration UX)
+      document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          const targetId = this.getAttribute('href');
+          if (targetId && targetId.startsWith('#')) {
+            e.preventDefault();
+            const targetEl = document.querySelector(targetId);
+            if (targetEl) {
+              targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        });
+      });
 
-        console.log('E/MERI · page d’accueil avec vision, horaires et direct.');
+      // Toast de bienvenue au chargement
+      window.addEventListener('load', function() {
+        setTimeout(() => {
+          showToast('✝️ Bienvenue à E/MERI · Que Dieu vous bénisse !', 3000);
+        }, 600);
+      });
+
+      console.log('E/MERI · Site style SORA Agency chargé.');
     })();
-</script>
+  </script>
 </body>
 </html>
