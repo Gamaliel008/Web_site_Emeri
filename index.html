@@ -1,879 +1,1263 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>E/MERI · Église des Ministères</title>
-  <!-- Font Awesome 6 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <style>
-    /* ---------- RESET & BASE ---------- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E/MERI · Église des Ministères</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ---------- RESET & BASE ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-      background: #faf8f4;
-      color: #1e2a36;
-      line-height: 1.6;
-    }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #faf8f4;
+            color: #1e2a36;
+            line-height: 1.6;
+            padding-top: 80px;
+            /* pour la bannière fixe */
+        }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
 
-    /* ---------- BANNIÈRE / HEADER (style SORA) ---------- */
-    .banner {
-      background: #0f1f26;
-      padding: 0.8rem 0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      border-bottom: 3px solid #f5d742;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    }
+        /* ---------- BANNIÈRE FIXE AVEC MENU DÉROULANT ---------- */
+        .banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 14px 0;
+            background: rgba(8, 18, 24, 0.85);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            transition: 0.4s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
 
-    .banner-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-    }
+        .banner.scrolled {
+            background: #0f1f26;
+            padding: 8px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      color: white;
-      text-decoration: none;
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
+        .banner-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
 
-    .logo i {
-      color: #f5d742;
-      font-size: 2rem;
-    }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: white;
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
 
-    .logo span {
-      font-weight: 300;
-      font-size: 0.7rem;
-      opacity: 0.8;
-      display: block;
-      letter-spacing: 1px;
-      margin-top: 2px;
-    }
+        .logo i {
+            color: #f5d742;
+            font-size: 1.8rem;
+        }
 
-    .main-nav {
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+        .logo span {
+            font-weight: 300;
+            font-size: 0.65rem;
+            opacity: 0.8;
+            display: block;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
 
-    .main-nav a {
-      color: rgba(255, 255, 255, 0.85);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: 0.2s;
-      padding-bottom: 4px;
-      border-bottom: 2px solid transparent;
-    }
+        /* ---- MENU DÉROULANT (hamburger) ---- */
+        .menu-toggle {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0.3rem 0.8rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .main-nav a:hover {
-      color: #f5d742;
-      border-bottom-color: #f5d742;
-    }
+        .menu-toggle:hover {
+            color: #f5d742;
+            transform: rotate(90deg);
+        }
 
-    .btn-nav {
-      background: #f5d742;
-      color: #0f1f26;
-      padding: 0.5rem 1.6rem;
-      border-radius: 60px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: 0.2s;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
+        .menu-toggle span {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
 
-    .btn-nav:hover {
-      background: #ffe066;
-      transform: scale(1.03);
-    }
+        .dropdown-menu {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(15, 31, 38, 0.95);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 1.5rem;
+            padding: 1.5rem 2rem;
+            min-width: 220px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transform: scale(0.9) translateY(-10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: 999;
+        }
 
-    /* ---------- HERO (style SORA) ---------- */
-    .hero {
-      background: linear-gradient(145deg, #132b36, #0a1a22);
-      color: white;
-      padding: 5rem 0 4rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      min-height: 480px;
-      display: flex;
-      align-items: center;
-    }
+        .dropdown-menu.active {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
 
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background: 
-        linear-gradient(135deg, rgba(10, 26, 34, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23132b36" width="1200" height="600"/><circle cx="300" cy="200" r="180" fill="%23f5d742" opacity="0.06"/><circle cx="900" cy="400" r="220" fill="%23f5d742" opacity="0.05"/></svg>');
-      background-size: cover, cover;
-      z-index: 0;
-    }
+        .dropdown-menu a {
+            display: block;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            padding: 0.6rem 0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            transition: 0.2s;
+        }
 
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 850px;
-      margin: 0 auto;
-    }
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
 
-    .hero .tag {
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      opacity: 0.7;
-      margin-bottom: 0.5rem;
-      font-weight: 300;
-    }
+        .dropdown-menu a:hover {
+            color: #f5d742;
+            padding-left: 8px;
+        }
 
-    .hero h1 {
-      font-size: 4rem;
-      font-weight: 700;
-      letter-spacing: -1px;
-      margin-bottom: 0.3rem;
-    }
+        .dropdown-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            color: #f5b742;
+        }
 
-    .hero h1 i {
-      color: #f5d742;
-      margin-right: 0.5rem;
-    }
+        /* ---------- CARROUSEL DIVISÉ ---------- */
+        .carousel-section {
+            padding: 2rem 0 3rem;
+            background: #0f1f26;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+        }
 
-    .hero .sub {
-      font-size: 1.4rem;
-      font-weight: 300;
-      opacity: 0.9;
-      margin-bottom: 0.8rem;
-      font-style: italic;
-    }
+        .carousel-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            width: 100%;
+        }
 
-    .hero .verse {
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(4px);
-      display: inline-block;
-      padding: 0.6rem 2.2rem;
-      border-radius: 60px;
-      border-left: 4px solid #f5d742;
-      font-size: 1.05rem;
-      margin: 0.8rem 0 1.8rem;
-    }
+        .carousel-left {
+            position: relative;
+            border-radius: 2rem;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            background: #1a3340;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
 
-    .hero .verse span {
-      opacity: 0.7;
-      font-size: 0.9rem;
-      margin-left: 8px;
-    }
+        .carousel-left img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease;
+        }
 
-    .hero-buttons {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
+        .carousel-left .slide-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: white;
+        }
 
-    .btn-primary {
-      background: #f5d742;
-      color: #0f1f26;
-      padding: 0.9rem 2.8rem;
-      border-radius: 60px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      box-shadow: 0 6px 18px rgba(245, 215, 66, 0.2);
-    }
+        .carousel-left .slide-content h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
 
-    .btn-primary:hover {
-      background: #ffe066;
-      transform: translateY(-3px);
-    }
+        .carousel-left .slide-content p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
 
-    .btn-outline {
-      background: transparent;
-      color: white;
-      padding: 0.9rem 2.8rem;
-      border-radius: 60px;
-      font-weight: 600;
-      border: 1.5px solid rgba(255, 255, 255, 0.3);
-      cursor: pointer;
-      transition: 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+        .carousel-right {
+            color: white;
+            padding: 1rem 0;
+        }
 
-    .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: #f5d742;
-      transform: translateY(-3px);
-    }
+        .carousel-right .message-slide {
+            animation: fadeSlide 0.8s ease;
+        }
 
-    /* ---------- SECTIONS (style SORA) ---------- */
-    section {
-      padding: 4.5rem 0;
-    }
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
 
-    .section-title {
-      text-align: center;
-      font-size: 2.4rem;
-      font-weight: 600;
-      color: #0f1f26;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+        .carousel-right h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #f5d742;
+        }
 
-    .section-title span {
-      color: #f5b742;
-    }
+        .carousel-right .verse {
+            font-style: italic;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            border-left: 4px solid #f5d742;
+            padding-left: 1.2rem;
+            margin: 0.8rem 0 1.2rem;
+        }
 
-    .section-sub {
-      text-align: center;
-      color: #4a5f6b;
-      max-width: 700px;
-      margin: 0 auto 2.8rem;
-      font-size: 1.1rem;
-    }
+        .carousel-right .verse span {
+            display: block;
+            font-style: normal;
+            opacity: 0.6;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
 
-    .bg-light {
-      background: #f5f2eb;
-    }
+        .carousel-right .message-text {
+            opacity: 0.85;
+            line-height: 1.7;
+        }
 
-    /* ---- Grilles ---- */
-    .grid-2, .grid-3, .grid-4 {
-      display: grid;
-      gap: 2rem;
-    }
-    .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-    .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        .carousel-indicators {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 1.5rem;
+        }
 
-    .card {
-      background: white;
-      border-radius: 2rem;
-      padding: 2rem 1.8rem;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-      border: 1px solid #eeeae0;
-      transition: 0.25s;
-      text-align: center;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      border-color: #f5d742;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
-    }
-    .card i {
-      color: #f5b742;
-      font-size: 2.4rem;
-      margin-bottom: 0.8rem;
-    }
-    .card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 0.4rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .card p {
-      color: #3d535f;
-      font-size: 0.95rem;
-    }
+        .carousel-indicators .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
 
-    /* ---- HORAIRES (carte spéciale) ---- */
-    .schedule-card {
-      background: white;
-      border-radius: 2rem;
-      padding: 2rem 2.5rem;
-      max-width: 720px;
-      margin: 0 auto;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-      border: 1px solid #eeeae0;
-    }
-    .schedule-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.7rem 0;
-      border-bottom: 1px solid #f0ebe0;
-    }
-    .schedule-item:last-child { border-bottom: none; }
-    .schedule-item .day { font-weight: 600; color: #0f1f26; text-transform: uppercase; }
-    .schedule-item .time { color: #3d535f; }
-    .schedule-item .time i { color: #f5b742; margin-right: 6px; width: 1.2rem; }
+        .carousel-indicators .dot.active {
+            background: #f5d742;
+            transform: scale(1.2);
+        }
 
-    /* ---- TÉMOIGNAGES ---- */
-    .testimonial .stars { color: #f5b742; letter-spacing: 3px; margin-bottom: 0.5rem; }
-    .testimonial p { font-style: italic; margin-bottom: 0.8rem; }
-    .testimonial .author { font-weight: 600; color: #0f1f26; }
-    .testimonial .role { font-size: 0.85rem; color: #5a707e; }
+        .carousel-indicators .dot:hover {
+            background: rgba(245, 215, 66, 0.6);
+        }
 
-    /* ---- SERMONS ---- */
-    .sermon-card iframe { width: 100%; border-radius: 1.2rem; aspect-ratio: 16/9; border: none; }
-    .sermon-card .sermon-meta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; font-size: 0.9rem; color: #4a5f6b; justify-content: center; }
-    .sermon-card .sermon-meta i { margin-right: 4px; }
+        /* ---------- SECTIONS (style existant) ---------- */
+        section {
+            padding: 4.5rem 0;
+        }
 
-    /* ---- GALERIE ---- */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.2rem;
-    }
-    .gallery-item {
-      background: #e8e3d6;
-      border-radius: 1.4rem;
-      aspect-ratio: 1/1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #0f1f26;
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: 0.25s;
-      cursor: pointer;
-      border: 1px solid #eeeae0;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .gallery-item:hover { transform: scale(1.02); border-color: #f5d742; }
-    .gallery-item i { font-size: 2.8rem; color: #b38b2a; margin-bottom: 0.4rem; }
+        .section-title {
+            text-align: center;
+            font-size: 2.4rem;
+            font-weight: 600;
+            color: #0f1f26;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    /* ---- FORMULAIRE PRIÈRE ---- */
-    .prayer-form {
-      max-width: 720px;
-      margin: 0 auto;
-      background: white;
-      padding: 2.2rem 2.8rem;
-      border-radius: 2rem;
-      border: 1px solid #eeeae0;
-    }
-    .prayer-form input, .prayer-form textarea {
-      width: 100%;
-      padding: 0.8rem 1.4rem;
-      border: 1px solid #ddd8cc;
-      border-radius: 60px;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      background: #fcfaf7;
-      transition: 0.2s;
-    }
-    .prayer-form input:focus, .prayer-form textarea:focus {
-      border-color: #f5d742;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(245, 215, 66, 0.15);
-    }
-    .prayer-form textarea { border-radius: 1.5rem; min-height: 120px; resize: vertical; }
-    .prayer-form button {
-      background: #f5d742;
-      color: #0f1f26;
-      border: none;
-      padding: 0.8rem 2.8rem;
-      border-radius: 60px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .prayer-form button:hover { background: #ffe066; transform: scale(1.02); }
+        .section-title span {
+            color: #f5b742;
+        }
 
-    /* ---- CTA BANNIÈRE ---- */
-    .cta-banner {
-      background: linear-gradient(145deg, #0f1f26, #1a3340);
-      color: white;
-      border-radius: 3rem;
-      padding: 2.8rem 2.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-    }
-    .cta-banner .cta-text { display: flex; align-items: center; gap: 1.2rem; }
-    .cta-banner .cta-text i { font-size: 3rem; color: #f5d742; }
-    .cta-banner .cta-text div { font-size: 1.1rem; }
-    .cta-banner .cta-text div strong { display: block; font-size: 1.6rem; font-weight: 600; text-transform: uppercase; }
-    .btn-cta {
-      background: #f5d742;
-      color: #0f1f26;
-      border: none;
-      padding: 0.9rem 3rem;
-      border-radius: 60px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      transition: 0.2s;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .btn-cta:hover { background: #ffe066; transform: scale(1.02); }
+        .section-sub {
+            text-align: center;
+            color: #4a5f6b;
+            max-width: 700px;
+            margin: 0 auto 2.8rem;
+            font-size: 1.1rem;
+        }
 
-    /* ---- FOOTER ---- */
-    footer {
-      background: #0f1f26;
-      color: rgba(255, 255, 255, 0.75);
-      padding: 3.5rem 0 1.8rem;
-      margin-top: 2rem;
-      border-top: 3px solid #f5d742;
-    }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 2.5rem;
-      margin-bottom: 2.5rem;
-    }
-    .footer-grid h4 { color: white; font-weight: 600; margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
-    .footer-grid p, .footer-grid a {
-      color: rgba(255, 255, 255, 0.7);
-      text-decoration: none;
-      display: block;
-      margin-bottom: 0.4rem;
-      font-size: 0.95rem;
-      transition: 0.2s;
-    }
-    .footer-grid a:hover { color: #f5d742; }
-    .footer-bottom {
-      text-align: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 1.8rem;
-      font-size: 0.9rem;
-    }
-    .footer-bottom i { color: #f5d742; margin: 0 4px; }
+        .bg-light {
+            background: #f5f2eb;
+        }
 
-    /* ---- TOAST ---- */
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%) scale(0.95);
-      background: #0f1f26;
-      color: white;
-      padding: 0.8rem 2.4rem;
-      border-radius: 60px;
-      font-weight: 500;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
-      opacity: 0;
-      transition: 0.3s ease;
-      pointer-events: none;
-      z-index: 9999;
-      border-left: 6px solid #f5d742;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) scale(1); }
-    .toast i { margin-right: 10px; color: #f5d742; }
+        /* ---- Grilles ---- */
+        .grid-2,
+        .grid-3,
+        .grid-4 {
+            display: grid;
+            gap: 2rem;
+        }
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
 
-    /* ---------- RESPONSIVE ---------- */
-    @media (max-width: 992px) {
-      .hero h1 { font-size: 3.2rem; }
-    }
-    @media (max-width: 768px) {
-      .hero h1 { font-size: 2.4rem; }
-      .hero .sub { font-size: 1.1rem; }
-      .banner-inner { flex-direction: column; align-items: stretch; text-align: center; }
-      .main-nav { justify-content: center; gap: 0.8rem; }
-      .cta-banner { flex-direction: column; text-align: center; }
-      .cta-banner .cta-text { flex-direction: column; }
-      .schedule-card { padding: 1.5rem; }
-      .section-title { font-size: 1.8rem; }
-      .prayer-form { padding: 1.5rem; }
-      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 480px) {
-      .hero { padding: 3rem 0; min-height: 380px; }
-      .hero h1 { font-size: 1.8rem; }
-      .hero .tag { font-size: 0.7rem; }
-      .hero-buttons .btn-primary, .hero-buttons .btn-outline { width: 100%; justify-content: center; }
-    }
-  </style>
+        .card {
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem 1.8rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eeeae0;
+            transition: 0.25s;
+            text-align: center;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #f5d742;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
+        }
+        .card i {
+            color: #f5b742;
+            font-size: 2.4rem;
+            margin-bottom: 0.8rem;
+        }
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .card p {
+            color: #3d535f;
+            font-size: 0.95rem;
+        }
+
+        /* ---- HORAIRES ---- */
+        .schedule-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem 2.5rem;
+            max-width: 720px;
+            margin: 0 auto;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eeeae0;
+        }
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #f0ebe0;
+        }
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+        .schedule-item .day {
+            font-weight: 600;
+            color: #0f1f26;
+            text-transform: uppercase;
+        }
+        .schedule-item .time {
+            color: #3d535f;
+        }
+        .schedule-item .time i {
+            color: #f5b742;
+            margin-right: 6px;
+            width: 1.2rem;
+        }
+
+        /* ---- TÉMOIGNAGES ---- */
+        .testimonial .stars {
+            color: #f5b742;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+        .testimonial p {
+            font-style: italic;
+            margin-bottom: 0.8rem;
+        }
+        .testimonial .author {
+            font-weight: 600;
+            color: #0f1f26;
+        }
+        .testimonial .role {
+            font-size: 0.85rem;
+            color: #5a707e;
+        }
+
+        /* ---- SERMONS ---- */
+        .sermon-card iframe {
+            width: 100%;
+            border-radius: 1.2rem;
+            aspect-ratio: 16/9;
+            border: none;
+        }
+        .sermon-card .sermon-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #4a5f6b;
+            justify-content: center;
+        }
+        .sermon-card .sermon-meta i {
+            margin-right: 4px;
+        }
+
+        /* ---- GALERIE ---- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.2rem;
+        }
+        .gallery-item {
+            background: #e8e3d6;
+            border-radius: 1.4rem;
+            aspect-ratio: 1/1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #0f1f26;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.25s;
+            cursor: pointer;
+            border: 1px solid #eeeae0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .gallery-item:hover {
+            transform: scale(1.02);
+            border-color: #f5d742;
+        }
+        .gallery-item i {
+            font-size: 2.8rem;
+            color: #b38b2a;
+            margin-bottom: 0.4rem;
+        }
+
+        /* ---- FORMULAIRE PRIÈRE ---- */
+        .prayer-form {
+            max-width: 720px;
+            margin: 0 auto;
+            background: white;
+            padding: 2.2rem 2.8rem;
+            border-radius: 2rem;
+            border: 1px solid #eeeae0;
+        }
+        .prayer-form input,
+        .prayer-form textarea {
+            width: 100%;
+            padding: 0.8rem 1.4rem;
+            border: 1px solid #ddd8cc;
+            border-radius: 60px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            background: #fcfaf7;
+            transition: 0.2s;
+        }
+        .prayer-form input:focus,
+        .prayer-form textarea:focus {
+            border-color: #f5d742;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(245, 215, 66, 0.15);
+        }
+        .prayer-form textarea {
+            border-radius: 1.5rem;
+            min-height: 120px;
+            resize: vertical;
+        }
+        .prayer-form button {
+            background: #f5d742;
+            color: #0f1f26;
+            border: none;
+            padding: 0.8rem 2.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .prayer-form button:hover {
+            background: #ffe066;
+            transform: scale(1.02);
+        }
+
+        /* ---- CTA BANNIÈRE ---- */
+        .cta-banner {
+            background: linear-gradient(145deg, #0f1f26, #1a3340);
+            color: white;
+            border-radius: 3rem;
+            padding: 2.8rem 2.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+        .cta-banner .cta-text {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .cta-banner .cta-text i {
+            font-size: 3rem;
+            color: #f5d742;
+        }
+        .cta-banner .cta-text div {
+            font-size: 1.1rem;
+        }
+        .cta-banner .cta-text div strong {
+            display: block;
+            font-size: 1.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .btn-cta {
+            background: #f5d742;
+            color: #0f1f26;
+            border: none;
+            padding: 0.9rem 3rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn-cta:hover {
+            background: #ffe066;
+            transform: scale(1.02);
+        }
+
+        /* ---- FOOTER ---- */
+        footer {
+            background: #0f1f26;
+            color: rgba(255, 255, 255, 0.75);
+            padding: 3.5rem 0 1.8rem;
+            margin-top: 2rem;
+            border-top: 3px solid #f5d742;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .footer-grid h4 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .footer-grid p,
+        .footer-grid a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+            transition: 0.2s;
+        }
+        .footer-grid a:hover {
+            color: #f5d742;
+        }
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 1.8rem;
+            font-size: 0.9rem;
+        }
+        .footer-bottom i {
+            color: #f5d742;
+            margin: 0 4px;
+        }
+
+        /* ---- TOAST ---- */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) scale(0.95);
+            background: #0f1f26;
+            color: white;
+            padding: 0.8rem 2.4rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+            opacity: 0;
+            transition: 0.3s ease;
+            pointer-events: none;
+            z-index: 9999;
+            border-left: 6px solid #f5d742;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        .toast i {
+            margin-right: 10px;
+            color: #f5d742;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 992px) {
+            .carousel-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .carousel-left {
+                aspect-ratio: 16/9;
+            }
+            .carousel-right h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .banner-inner {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .main-nav {
+                display: none;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            .carousel-right h2 {
+                font-size: 1.5rem;
+            }
+            .carousel-right .verse {
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            .schedule-card {
+                padding: 1.5rem;
+            }
+            .cta-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+            .cta-banner .cta-text {
+                flex-direction: column;
+            }
+            .dropdown-menu {
+                right: 10px;
+                min-width: 180px;
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .carousel-left {
+                aspect-ratio: 4/3;
+            }
+            .carousel-right h2 {
+                font-size: 1.3rem;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Pour les écrans > 768px, on cache le bouton menu */
+        @media (min-width: 769px) {
+            .menu-toggle {
+                display: none;
+            }
+            .main-nav {
+                display: flex;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- ===== BANNIÈRE / HEADER (style SORA) ===== -->
-  <header class="banner">
-    <div class="container banner-inner">
-      <a href="#" class="logo">
-        <i class="fas fa-church"></i> E/MERI
-        <span>Église des Ministères</span>
-      </a>
-      <nav class="main-nav">
-        <a href="#accueil">Accueil</a>
-        <a href="#apropos">À propos</a>
-        <a href="#ministeres">Ministères</a>
-        <a href="#sermons">Sermons</a>
-        <a href="#evenements">Événements</a>
-        <a href="#galerie">Galerie</a>
-        <a href="#priere">Prière</a>
-        <a href="#temoignages">Témoignages</a>
-        <a href="#contact">Contact</a>
-        <button class="btn-nav" id="navJoinBtn"><i class="fas fa-user-plus"></i> Rejoindre</button>
-      </nav>
+    <!-- ===== BANNIÈRE FIXE AVEC MENU DÉROULANT ===== -->
+    <header class="banner" id="mainBanner">
+        <div class="container banner-inner">
+            <a href="#" class="logo">
+                <i class="fas fa-church"></i> E/MERI
+                <span>Église des Ministères</span>
+            </a>
+
+            <!-- Menu principal (visible sur desktop) -->
+            <nav class="main-nav">
+                <a href="#accueil">Accueil</a>
+                <a href="#apropos">À propos</a>
+                <a href="#ministeres">Ministères</a>
+                <a href="#sermons">Sermons</a>
+                <a href="#evenements">Événements</a>
+                <a href="#galerie">Galerie</a>
+                <a href="#priere">Prière</a>
+                <a href="#temoignages">Témoignages</a>
+                <a href="#contact">Contact</a>
+                <button class="btn-nav" id="navJoinBtn"><i class="fas fa-user-plus"></i> Rejoindre</button>
+            </nav>
+
+            <!-- Bouton menu hamburger (mobile/tablette) -->
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+                <span>Menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== MENU DÉROULANT (overlay) ===== -->
+    <div class="dropdown-menu" id="dropdownMenu">
+        <a href="#accueil"><i class="fas fa-home"></i> Accueil</a>
+        <a href="#apropos"><i class="fas fa-info-circle"></i> À propos</a>
+        <a href="#ministeres"><i class="fas fa-hands-praying"></i> Ministères</a>
+        <a href="#sermons"><i class="fas fa-bible"></i> Sermons</a>
+        <a href="#evenements"><i class="fas fa-calendar-alt"></i> Événements</a>
+        <a href="#galerie"><i class="fas fa-images"></i> Galerie</a>
+        <a href="#priere"><i class="fas fa-pray"></i> Prière</a>
+        <a href="#temoignages"><i class="fas fa-star"></i> Témoignages</a>
+        <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="#" id="dropdownJoinBtn"><i class="fas fa-user-plus"></i> Rejoindre</a>
     </div>
-  </header>
 
-  <!-- ===== ACCUEIL / HERO ===== -->
-  <section id="accueil" class="hero">
-    <div class="hero-bg"></div>
-    <div class="container hero-content">
-      <p class="tag"><i class="fas fa-fire" style="color:#f5d742;"></i> Église des Ministères</p>
-      <h1><i class="fas fa-church"></i> E/MERI</h1>
-      <p class="sub">"L'excellence de l'accueil spirituel pour une vie transformée"</p>
-      <div class="verse">
-        <i class="fas fa-quote-left"></i> « Allez, faites de toutes les nations des disciples » 
-        <span>— Matthieu 28:19</span>
-      </div>
-      <div class="hero-buttons">
-        <button class="btn-primary" id="heroJoinBtn"><i class="fas fa-arrow-right"></i> Nous rejoindre</button>
-        <button class="btn-outline" id="liveBtn"><i class="fas fa-video"></i> Culte en direct</button>
-      </div>
-    </div>
-  </section>
+    <!-- ===== CARROUSEL DIVISÉ (pasteur + message) ===== -->
+    <section class="carousel-section" id="accueil">
+        <div class="carousel-container">
+            <!-- Partie gauche : photo du pasteur / comité -->
+            <div class="carousel-left" id="carouselLeft">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect fill='%231a3340' width='400' height='300'/><circle cx='200' cy='120' r='60' fill='%23f5d742' opacity='0.3'/><circle cx='150' cy='220' r='30' fill='%23f5d742' opacity='0.2'/><circle cx='250' cy='220' r='30' fill='%23f5d742' opacity='0.2'/><text x='200' y='280' text-anchor='middle' fill='white' font-size='16' font-family='Segoe UI'>Pasteur Jean-Baptiste K.</text></svg>" alt="Pasteur Jean-Baptiste K." id="carouselImage" />
+                <div class="slide-content" id="slideContent">
+                    <h3 id="slideTitle">Pasteur Jean-Baptiste K.</h3>
+                    <p id="slideDesc">Pasteur fondateur · Docteur en théologie</p>
+                </div>
+            </div>
 
-  <!-- ===== HORAIRES (carte) ===== -->
-  <section style="padding-top: 0; margin-top: -2.5rem; position: relative; z-index: 5;">
-    <div class="container">
-      <div class="schedule-card">
-        <h3 style="text-align:center; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px;">
-          <i class="fas fa-clock" style="color:#f5b742;"></i> Horaires des cultes
-        </h3>
-        <div class="schedule-item"><span class="day"><i class="fas fa-calendar-day"></i> Dimanche</span><span class="time"><i class="fas fa-hourglass-start"></i> 8h30 · 10h30 · 16h00</span></div>
-        <div class="schedule-item"><span class="day"><i class="fas fa-calendar-day"></i> Mercredi</span><span class="time"><i class="fas fa-fire"></i> Réveil · 18h30</span></div>
-        <div class="schedule-item"><span class="day"><i class="fas fa-calendar-day"></i> Vendredi</span><span class="time"><i class="fas fa-pray"></i> Intercession · 19h00</span></div>
-        <div class="schedule-item"><span class="day"><i class="fas fa-calendar-day"></i> Samedi</span><span class="time"><i class="fas fa-users"></i> Jeunesse · 16h00</span></div>
-      </div>
-    </div>
-  </section>
+            <!-- Partie droite : message + verset synchronisé -->
+            <div class="carousel-right" id="carouselRight">
+                <div class="message-slide" id="messageSlide">
+                    <h2 id="msgTitle">Bienvenue à E/MERI</h2>
+                    <div class="verse" id="msgVerse">
+                        « Allez, faites de toutes les nations des disciples »
+                        <span>— Matthieu 28:19</span>
+                    </div>
+                    <p class="message-text" id="msgText">
+                        Une communauté vivante, centrée sur l'évangélisation, le réveil et l'intercession.
+                        Rejoignez-nous pour célébrer, grandir dans la foi et servir ensemble.
+                    </p>
+                </div>
 
-  <!-- ===== À PROPOS ===== -->
-  <section id="apropos" class="bg-light">
-    <div class="container">
-      <h2 class="section-title">À propos de <span>E/MERI</span></h2>
-      <div class="grid-2">
-        <div class="card">
-          <i class="fas fa-history"></i>
-          <h3>Notre histoire</h3>
-          <p>E/MERI est née d'une vision de réveil spirituel à Bunkeya. Depuis 2015, nous rassemblons des cœurs assoiffés de Dieu.</p>
+                <!-- Indicateurs -->
+                <div class="carousel-indicators" id="carouselIndicators">
+                    <button class="dot active" data-index="0"></button>
+                    <button class="dot" data-index="1"></button>
+                    <button class="dot" data-index="2"></button>
+                    <button class="dot" data-index="3"></button>
+                </div>
+            </div>
         </div>
-        <div class="card">
-          <i class="fas fa-eye"></i>
-          <h3>Vision & Mission</h3>
-          <p><strong>Vision :</strong> Une Église missionnaire, animée par le réveil.<br/>
-          <strong>Mission :</strong> Évangéliser, enseigner, intercéder et former des disciples.</p>
+    </section>
+
+    <!-- ===== HORAIRES (carte) ===== -->
+    <section style="padding-top: 0; margin-top: -2.5rem; position: relative; z-index: 5;">
+        <div class="container">
+            <div class="schedule-card">
+                <h3 style="text-align:center; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                    <i class="fas fa-clock" style="color:#f5b742;"></i> Horaires des cultes
+                </h3>
+                <div class="schedule-item"><span class="day"><i class="fas fa-calendar-day"></i> Dimanche</span><span class="time"><i class="fas fa-hourglass-start"></i> 8h30 · 10h30 · 16h00</span></div>
+                <div class="schedule-item"><span class="day"><i class="fas fa-calendar-day"></i> Mercredi</span><span class="time"><i class="fas fa-fire"></i> Réveil · 18h30</span></div>
+                <div class="schedule-item"><span class="day"><i class="fas fa-calendar-day"></i> Vendredi</span><span class="time"><i class="fas fa-pray"></i> Intercession · 19h00</span></div>
+                <div class="schedule-item"><span class="day"><i class="fas fa-calendar-day"></i> Samedi</span><span class="time"><i class="fas fa-users"></i> Jeunesse · 16h00</span></div>
+            </div>
         </div>
-        <div class="card">
-          <i class="fas fa-gem"></i>
-          <h3>Nos valeurs</h3>
-          <p>Amour · Intégrité · Unité · Service · Ferveur dans la prière</p>
+    </section>
+
+    <!-- ===== À PROPOS ===== -->
+    <section id="apropos" class="bg-light">
+        <div class="container">
+            <h2 class="section-title">À propos de <span>E/MERI</span></h2>
+            <div class="grid-2">
+                <div class="card">
+                    <i class="fas fa-history"></i>
+                    <h3>Notre histoire</h3>
+                    <p>E/MERI est née d'une vision de réveil spirituel à Bunkeya. Depuis 2015, nous rassemblons des cœurs assoiffés de Dieu.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-eye"></i>
+                    <h3>Vision & Mission</h3>
+                    <p><strong>Vision :</strong> Une Église missionnaire, animée par le réveil.<br/>
+                        <strong>Mission :</strong> Évangéliser, enseigner, intercéder et former des disciples.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-gem"></i>
+                    <h3>Nos valeurs</h3>
+                    <p>Amour · Intégrité · Unité · Service · Ferveur dans la prière</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-user-pastor"></i>
+                    <h3>Pasteur & Responsables</h3>
+                    <p><strong>Pasteur Jean-Baptiste K.</strong> — Pasteur fondateur.<br/>
+                        Équipe pastorale : Marie L., David M., Samuel K.</p>
+                </div>
+            </div>
         </div>
-        <div class="card">
-          <i class="fas fa-user-pastor"></i>
-          <h3>Pasteur & Responsables</h3>
-          <p><strong>Pasteur Jean-Baptiste K.</strong> — Pasteur fondateur.<br/>
-          Équipe pastorale : Marie L., David M., Samuel K.</p>
+    </section>
+
+    <!-- ===== MINISTÈRES ===== -->
+    <section id="ministeres">
+        <div class="container">
+            <h2 class="section-title">Nos <span>ministères</span></h2>
+            <p class="section-sub">Des services pour grandir dans la foi et servir ensemble.</p>
+            <div class="grid-3">
+                <div class="card"><i class="fas fa-child"></i><h3>Jeunesse</h3><p>Rencontres dynamiques, camps et disciples.</p></div>
+                <div class="card"><i class="fas fa-female"></i><h3>Mamans</h3><p>Groupes de partage et encouragement mutuel.</p></div>
+                <div class="card"><i class="fas fa-hands-praying"></i><h3>Intercesseurs</h3><p>Veillées de prière et chaînes d'intercession.</p></div>
+                <div class="card"><i class="fas fa-baby"></i><h3>Enfants</h3><p>École du dimanche et activités adaptées.</p></div>
+                <div class="card"><i class="fas fa-music"></i><h3>Louange</h3><p>Équipe de chant et musiciens pour l'adoration.</p></div>
+                <div class="card"><i class="fas fa-globe-africa"></i><h3>Évangélisation</h3><p>Missions locales et internationales.</p></div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== MINISTÈRES ===== -->
-  <section id="ministeres">
-    <div class="container">
-      <h2 class="section-title">Nos <span>ministères</span></h2>
-      <p class="section-sub">Des services pour grandir dans la foi et servir ensemble.</p>
-      <div class="grid-3">
-        <div class="card"><i class="fas fa-child"></i><h3>Jeunesse</h3><p>Rencontres dynamiques, camps et disciples.</p></div>
-        <div class="card"><i class="fas fa-female"></i><h3>Femmes</h3><p>Groupes de partage et encouragement mutuel.</p></div>
-        <div class="card"><i class="fas fa-male"></i><h3>Hommes</h3><p>Fraternité, enseignement et actions de service.</p></div>
-        <div class="card"><i class="fas fa-baby"></i><h3>Enfants</h3><p>École du dimanche et activités adaptées.</p></div>
-        <div class="card"><i class="fas fa-music"></i><h3>Louange</h3><p>Équipe de chant et musiciens pour l'adoration.</p></div>
-        <div class="card"><i class="fas fa-hands-praying"></i><h3>Intercession</h3><p>Veillées de prière et chaînes d'intercession.</p></div>
-        <div class="card"><i class="fas fa-globe-africa"></i><h3>Évangélisation</h3><p>Missions locales et internationales.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== SERMONS ===== -->
-  <section id="sermons" class="bg-light">
-    <div class="container">
-      <h2 class="section-title">Sermons & <span>prédications</span></h2>
-      <p class="section-sub">Écoutez, regardez ou lisez les messages pour votre édification.</p>
-      <div class="grid-2">
-        <div class="card sermon-card">
-          <iframe src="https://www.youtube.com/embed/3yWzI2ba_2w" allowfullscreen></iframe>
-          <h3 style="margin-top:0.8rem;">La puissance de l'Évangile</h3>
-          <div class="sermon-meta"><span><i class="fas fa-calendar"></i> 12 avril 2026</span><span><i class="fas fa-tag"></i> Réveil</span></div>
+    <!-- ===== SERMONS ===== -->
+    <section id="sermons" class="bg-light">
+        <div class="container">
+            <h2 class="section-title">Sermons & <span>prédications</span></h2>
+            <p class="section-sub">Écoutez, regardez ou lisez les messages pour votre édification.</p>
+            <div class="grid-2">
+                <div class="card sermon-card">
+                    <iframe src="https://www.youtube.com/embed/3yWzI2ba_2w" allowfullscreen></iframe>
+                    <h3 style="margin-top:0.8rem;">La puissance de l'Évangile</h3>
+                    <div class="sermon-meta"><span><i class="fas fa-calendar"></i> 12 avril 2026</span><span><i class="fas fa-tag"></i> Réveil</span></div>
+                </div>
+                <div class="card sermon-card">
+                    <iframe src="https://www.youtube.com/embed/3yWzI2ba_2w" allowfullscreen></iframe>
+                    <h3 style="margin-top:0.8rem;">L'intercession qui change les choses</h3>
+                    <div class="sermon-meta"><span><i class="fas fa-calendar"></i> 5 avril 2026</span><span><i class="fas fa-tag"></i> Prière</span></div>
+                </div>
+            </div>
+            <div style="text-align:center; margin-top:2rem;">
+                <button class="btn-primary" style="background:#0f1f26; color:white;" onclick="showToast('📖 Tous les sermons sont disponibles sur notre chaîne YouTube.')">
+                    <i class="fas fa-headphones"></i> Audios & notes
+                </button>
+            </div>
         </div>
-        <div class="card sermon-card">
-          <iframe src="https://www.youtube.com/embed/3yWzI2ba_2w" allowfullscreen></iframe>
-          <h3 style="margin-top:0.8rem;">L'intercession qui change les choses</h3>
-          <div class="sermon-meta"><span><i class="fas fa-calendar"></i> 5 avril 2026</span><span><i class="fas fa-tag"></i> Prière</span></div>
+    </section>
+
+    <!-- ===== ÉVÉNEMENTS ===== -->
+    <section id="evenements">
+        <div class="container">
+            <h2 class="section-title">Événements <span>à venir</span></h2>
+            <p class="section-sub">Conférences, veillées, campagnes — inscrivez-vous en ligne.</p>
+            <div class="grid-3">
+                <div class="card"><i class="fas fa-calendar-alt"></i><h3>Conférence de réveil</h3><p>26-28 juin 2026 · Avec Pasteur Jean-Baptiste K.</p><button class="btn-nav" style="margin-top:0.8rem; background:#f5d742; color:#0f1f26;" onclick="showToast('✅ Inscription enregistrée !')">S'inscrire</button></div>
+                <div class="card"><i class="fas fa-moon"></i><h3>Veillée d'intercession</h3><p>Vendredi 19 juin · 19h00 · Thème : « Le feu de l'Esprit »</p><button class="btn-nav" style="margin-top:0.8rem; background:#f5d742; color:#0f1f26;" onclick="showToast('✅ Inscription enregistrée !')">S'inscrire</button></div>
+                <div class="card"><i class="fas fa-bullhorn"></i><h3>Campagne d'évangélisation</h3><p>10-12 juillet 2026 · Quartier Bunkeya</p><button class="btn-nav" style="margin-top:0.8rem; background:#f5d742; color:#0f1f26;" onclick="showToast('✅ Inscription enregistrée !')">S'inscrire</button></div>
+            </div>
         </div>
-      </div>
-      <div style="text-align:center; margin-top:2rem;">
-        <button class="btn-primary" style="background:#0f1f26; color:white;" onclick="showToast('📖 Tous les sermons sont disponibles sur notre chaîne YouTube.')">
-          <i class="fas fa-headphones"></i> Audios & notes
-        </button>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== ÉVÉNEMENTS ===== -->
-  <section id="evenements">
-    <div class="container">
-      <h2 class="section-title">Événements <span>à venir</span></h2>
-      <p class="section-sub">Conférences, veillées, campagnes — inscrivez-vous en ligne.</p>
-      <div class="grid-3">
-        <div class="card"><i class="fas fa-calendar-alt"></i><h3>Conférence de réveil</h3><p>26-28 juin 2026 · Avec Pasteur Jean-Baptiste K.</p><button class="btn-nav" style="margin-top:0.8rem; background:#f5d742; color:#0f1f26;" onclick="showToast('✅ Inscription enregistrée !')">S'inscrire</button></div>
-        <div class="card"><i class="fas fa-moon"></i><h3>Veillée d'intercession</h3><p>Vendredi 19 juin · 19h00 · Thème : « Le feu de l'Esprit »</p><button class="btn-nav" style="margin-top:0.8rem; background:#f5d742; color:#0f1f26;" onclick="showToast('✅ Inscription enregistrée !')">S'inscrire</button></div>
-        <div class="card"><i class="fas fa-bullhorn"></i><h3>Campagne d'évangélisation</h3><p>10-12 juillet 2026 · Quartier Bunkeya</p><button class="btn-nav" style="margin-top:0.8rem; background:#f5d742; color:#0f1f26;" onclick="showToast('✅ Inscription enregistrée !')">S'inscrire</button></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== GALERIE ===== -->
-  <section id="galerie" class="bg-light">
-    <div class="container">
-      <h2 class="section-title">Galerie <span>photo & vidéo</span></h2>
-      <p class="section-sub">Moments de culte, de partage et de réveil.</p>
-      <div class="gallery-grid">
-        <div class="gallery-item"><i class="fas fa-image"></i> Culte</div>
-        <div class="gallery-item"><i class="fas fa-image"></i> Jeunesse</div>
-        <div class="gallery-item"><i class="fas fa-image"></i> Louange</div>
-        <div class="gallery-item"><i class="fas fa-image"></i> Intercession</div>
-        <div class="gallery-item"><i class="fas fa-video"></i> Vidéo 1</div>
-        <div class="gallery-item"><i class="fas fa-video"></i> Vidéo 2</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== DEMANDE DE PRIÈRE ===== -->
-  <section id="priere">
-    <div class="container">
-      <h2 class="section-title">Demande de <span>prière</span></h2>
-      <p class="section-sub">Confiez-nous vos fardeaux, nous prierons pour vous.</p>
-      <div class="prayer-form">
-        <form id="prayerForm">
-          <input type="text" placeholder="Votre nom" required />
-          <input type="email" placeholder="Email (facultatif)" />
-          <textarea placeholder="Décrivez votre sujet de prière..." required></textarea>
-          <button type="submit"><i class="fas fa-pray"></i> Envoyer ma demande</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== TÉMOIGNAGES ===== -->
-  <section id="temoignages" class="bg-light">
-    <div class="container">
-      <h2 class="section-title">Ce qu'ils disent de <span>E/MERI</span></h2>
-      <p class="section-sub">Des vies transformées par la puissance de Dieu.</p>
-      <div class="grid-3">
-        <div class="card testimonial">
-          <div class="stars">★★★★★</div>
-          <p>« J'ai été guéri de dépression grâce aux prières de l'église. E/MERI est ma famille. »</p>
-          <div class="author">Chantal M.</div>
-          <div class="role">Membre</div>
+    <!-- ===== GALERIE ===== -->
+    <section id="galerie" class="bg-light">
+        <div class="container">
+            <h2 class="section-title">Galerie <span>photo & vidéo</span></h2>
+            <p class="section-sub">Moments de culte, de partage et de réveil.</p>
+            <div class="gallery-grid">
+                <div class="gallery-item"><i class="fas fa-image"></i> Culte</div>
+                <div class="gallery-item"><i class="fas fa-image"></i> Jeunesse</div>
+                <div class="gallery-item"><i class="fas fa-image"></i> Louange</div>
+                <div class="gallery-item"><i class="fas fa-image"></i> Intercession</div>
+                <div class="gallery-item"><i class="fas fa-video"></i> Vidéo 1</div>
+                <div class="gallery-item"><i class="fas fa-video"></i> Vidéo 2</div>
+            </div>
         </div>
-        <div class="card testimonial">
-          <div class="stars">★★★★★</div>
-          <p>« La puissance de Dieu se manifeste ici. Mon fils a été délivré lors d'une veillée. »</p>
-          <div class="author">Robert T.</div>
-          <div class="role">Visiteur</div>
+    </section>
+
+    <!-- ===== DEMANDE DE PRIÈRE ===== -->
+    <section id="priere">
+        <div class="container">
+            <h2 class="section-title">Demande de <span>prière</span></h2>
+            <p class="section-sub">Confiez-nous vos fardeaux, nous prierons pour vous.</p>
+            <div class="prayer-form">
+                <form id="prayerForm">
+                    <input type="text" placeholder="Votre nom" required />
+                    <input type="email" placeholder="Email (facultatif)" />
+                    <textarea placeholder="Décrivez votre sujet de prière..." required></textarea>
+                    <button type="submit"><i class="fas fa-pray"></i> Envoyer ma demande</button>
+                </form>
+            </div>
         </div>
-        <div class="card testimonial">
-          <div class="stars">★★★★★</div>
-          <p>« Une église où l'on se sent aimé et accepté. Les messages transforment la vie. »</p>
-          <div class="author">Grace K.</div>
-          <div class="role">Jeunesse</div>
+    </section>
+
+    <!-- ===== TÉMOIGNAGES ===== -->
+    <section id="temoignages" class="bg-light">
+        <div class="container">
+            <h2 class="section-title">Ce qu'ils disent de <span>E/MERI</span></h2>
+            <p class="section-sub">Des vies transformées par la puissance de Dieu.</p>
+            <div class="grid-3">
+                <div class="card testimonial">
+                    <div class="stars">★★★★★</div>
+                    <p>« J'ai été guéri de dépression grâce aux prières de l'église. E/MERI est ma famille. »</p>
+                    <div class="author">Chantal M.</div>
+                    <div class="role">Membre</div>
+                </div>
+                <div class="card testimonial">
+                    <div class="stars">★★★★★</div>
+                    <p>« La puissance de Dieu se manifeste ici. Mon fils a été délivré lors d'une veillée. »</p>
+                    <div class="author">Robert T.</div>
+                    <div class="role">Visiteur</div>
+                </div>
+                <div class="card testimonial">
+                    <div class="stars">★★★★★</div>
+                    <p>« Une église où l'on se sent aimé et accepté. Les messages transforment la vie. »</p>
+                    <div class="author">Grace K.</div>
+                    <div class="role">Jeunesse</div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== CONTACT ===== -->
-  <section id="contact">
-    <div class="container">
-      <h2 class="section-title">Contactez-<span>nous</span></h2>
-      <p class="section-sub">Retrouvez-nous, écrivez-nous ou appelez-nous.</p>
-      <div class="grid-2">
-        <div class="card">
-          <i class="fas fa-map-pin"></i>
-          <h3>Adresse</h3>
-          <p>Bunkeya, coin boulevard LDK<br/>En face du supermarché S&K</p>
-          <div style="margin-top:1rem; background:#e8e3d6; border-radius:1.2rem; padding:0.8rem; text-align:center; font-size:0.9rem; border:1px solid #ddd8cc;">
-            <i class="fas fa-map"></i> Voir sur Google Maps
-          </div>
+    <!-- ===== CONTACT ===== -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Contactez-<span>nous</span></h2>
+            <p class="section-sub">Retrouvez-nous, écrivez-nous ou appelez-nous.</p>
+            <div class="grid-2">
+                <div class="card">
+                    <i class="fas fa-map-pin"></i>
+                    <h3>Adresse</h3>
+                    <p>Bunkeya, coin boulevard LDK<br/>En face du supermarché S&K</p>
+                    <div style="margin-top:1rem; background:#e8e3d6; border-radius:1.2rem; padding:0.8rem; text-align:center; font-size:0.9rem; border:1px solid #ddd8cc;">
+                        <i class="fas fa-map"></i> Voir sur Google Maps
+                    </div>
+                </div>
+                <div class="card">
+                    <i class="fas fa-phone-alt"></i>
+                    <h3>Téléphone & WhatsApp</h3>
+                    <p><i class="fas fa-phone"></i> +243 999 999 999</p>
+                    <p><i class="fab fa-whatsapp" style="color:#25D366;"></i> +243 999 999 999</p>
+                    <p><i class="fas fa-envelope"></i> contact@emeri.org</p>
+                    <div style="margin-top:1.2rem; display:flex; gap:1.5rem; font-size:1.8rem; justify-content:center;">
+                        <i class="fab fa-facebook" style="color:#3b5998; cursor:pointer;"></i>
+                        <i class="fab fa-youtube" style="color:#ff0000; cursor:pointer;"></i>
+                        <i class="fab fa-instagram" style="color:#E4405F; cursor:pointer;"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card">
-          <i class="fas fa-phone-alt"></i>
-          <h3>Téléphone & WhatsApp</h3>
-          <p><i class="fas fa-phone"></i> +243 999 999 999</p>
-          <p><i class="fab fa-whatsapp" style="color:#25D366;"></i> +243 999 999 999</p>
-          <p><i class="fas fa-envelope"></i> contact@emeri.org</p>
-          <div style="margin-top:1.2rem; display:flex; gap:1.5rem; font-size:1.8rem; justify-content:center;">
-            <i class="fab fa-facebook" style="color:#3b5998; cursor:pointer;"></i>
-            <i class="fab fa-youtube" style="color:#ff0000; cursor:pointer;"></i>
-            <i class="fab fa-instagram" style="color:#E4405F; cursor:pointer;"></i>
-          </div>
+    </section>
+
+    <!-- ===== CTA FINAL ===== -->
+    <section style="padding-top:0;">
+        <div class="container">
+            <div class="cta-banner">
+                <div class="cta-text">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <div><strong>Prêt à nous rejoindre ?</strong><span>Venez vivre l'expérience E/MERI · Un lieu de réveil et de famille.</span></div>
+                </div>
+                <button class="btn-cta" id="bigJoinBtn"><i class="fas fa-arrow-right"></i> Nous rejoindre</button>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== CTA FINAL ===== -->
-  <section style="padding-top:0;">
-    <div class="container">
-      <div class="cta-banner">
-        <div class="cta-text">
-          <i class="fas fa-hand-holding-heart"></i>
-          <div><strong>Prêt à nous rejoindre ?</strong><span>Venez vivre l'expérience E/MERI · Un lieu de réveil et de famille.</span></div>
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>E/MERI</h4>
+                    <p>Église des Ministères, d'Évangélisation, de Réveil et d'Intercession</p>
+                    <p><i class="fas fa-map-pin" style="color:#f5d742;"></i> Bunkeya, coin boulevard LDK</p>
+                    <p><i class="fas fa-store" style="color:#f5d742;"></i> En face du supermarché S&K</p>
+                </div>
+                <div>
+                    <h4>Liens rapides</h4>
+                    <a href="#accueil">Accueil</a>
+                    <a href="#apropos">À propos</a>
+                    <a href="#ministeres">Ministères</a>
+                    <a href="#sermons">Sermons</a>
+                    <a href="#evenements">Événements</a>
+                    <a href="#galerie">Galerie</a>
+                    <a href="#priere">Prière</a>
+                    <a href="#temoignages">Témoignages</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-phone-alt"></i> +243 999 999 999</p>
+                    <p><i class="fas fa-envelope"></i> contact@emeri.org</p>
+                    <p><i class="fab fa-whatsapp"></i> WhatsApp</p>
+                </div>
+                <div>
+                    <h4>Suivez-nous</h4>
+                    <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                    <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+                    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <i class="fas fa-cross"></i> E/MERI · Église des Ministères · Bunkeya, RDC
+                <span style="display:block; margin-top:6px; opacity:0.6; font-size:0.8rem;">© 2026 — Toute grâce soit à Dieu</span>
+            </div>
         </div>
-        <button class="btn-cta" id="bigJoinBtn"><i class="fas fa-arrow-right"></i> Nous rejoindre</button>
-      </div>
-    </div>
-  </section>
+    </footer>
 
-  <!-- ===== FOOTER ===== -->
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <h4>E/MERI</h4>
-          <p>Église des Ministères, d'Évangélisation, de Réveil et d'Intercession</p>
-          <p><i class="fas fa-map-pin" style="color:#f5d742;"></i> Bunkeya, coin boulevard LDK</p>
-          <p><i class="fas fa-store" style="color:#f5d742;"></i> En face du supermarché S&K</p>
-        </div>
-        <div>
-          <h4>Liens rapides</h4>
-          <a href="#accueil">Accueil</a>
-          <a href="#apropos">À propos</a>
-          <a href="#ministeres">Ministères</a>
-          <a href="#sermons">Sermons</a>
-          <a href="#evenements">Événements</a>
-          <a href="#galerie">Galerie</a>
-          <a href="#priere">Prière</a>
-          <a href="#temoignages">Témoignages</a>
-          <a href="#contact">Contact</a>
-        </div>
-        <div>
-          <h4>Contact</h4>
-          <p><i class="fas fa-phone-alt"></i> +243 999 999 999</p>
-          <p><i class="fas fa-envelope"></i> contact@emeri.org</p>
-          <p><i class="fab fa-whatsapp"></i> WhatsApp</p>
-        </div>
-        <div>
-          <h4>Suivez-nous</h4>
-          <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
-          <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
-          <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <i class="fas fa-cross"></i> E/MERI · Église des Ministères · Bunkeya, RDC
-        <span style="display:block; margin-top:6px; opacity:0.6; font-size:0.8rem;">© 2026 — Toute grâce soit à Dieu</span>
-      </div>
-    </div>
-  </footer>
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg">Bienvenue</span></div>
 
-  <!-- ===== TOAST ===== -->
-  <div id="toast" class="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg">Bienvenue</span></div>
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        (function() {
+            "use strict";
 
-  <!-- ===== JAVASCRIPT ===== -->
-  <script>
-    (function() {
-      "use strict";
+            // ---- Éléments du carrousel ----
+            const slidesData = [{
+                img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect fill='%231a3340' width='400' height='300'/><circle cx='200' cy='120' r='60' fill='%23f5d742' opacity='0.3'/><text x='200' y='280' text-anchor='middle' fill='white' font-size='16' font-family='Segoe UI'>Pasteur Jean-Baptiste K.</text></svg>",
+                title: "Pasteur Jean-Baptiste K.",
+                desc: "Pasteur fondateur · Docteur en théologie",
+                msgTitle: "Bienvenue à E/MERI",
+                verse: "« Allez, faites de toutes les nations des disciples »",
+                verseRef: "— Matthieu 28:19",
+                msgText: "Une communauté vivante, centrée sur l'évangélisation, le réveil et l'intercession. Rejoignez-nous pour célébrer, grandir dans la foi et servir ensemble."
+            }, {
+                img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect fill='%231a3340' width='400' height='300'/><circle cx='150' cy='120' r='40' fill='%23f5d742' opacity='0.25'/><circle cx='250' cy='120' r='40' fill='%23f5d742' opacity='0.25'/><text x='200' y='280' text-anchor='middle' fill='white' font-size='16' font-family='Segoe UI'>Équipe pastorale</text></svg>",
+                title: "Équipe pastorale",
+                desc: "Marie L. · David M. · Samuel K.",
+                msgTitle: "Une famille spirituelle",
+                verse: "« Là où deux ou trois sont assemblés en mon nom, je suis au milieu d'eux »",
+                verseRef: "— Matthieu 18:20",
+                msgText: "Nous croyons en la puissance de la communauté. Chaque membre est important et contribue à l'édification de l'Église."
+            }, {
+                img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect fill='%231a3340' width='400' height='300'/><circle cx='200' cy='150' r='80' fill='%23f5d742' opacity='0.2'/><text x='200' y='280' text-anchor='middle' fill='white' font-size='18' font-family='Segoe UI'>🔥 Réveil spirituel</text></svg>",
+                title: "Réveil spirituel",
+                desc: "Un mouvement de l'Esprit",
+                msgTitle: "Le réveil est là !",
+                verse: "« Soyez sobres, veillez. Votre adversaire, le diable, rôde comme un lion rugissant »",
+                verseRef: "— 1 Pierre 5:8",
+                msgText: "Dieu visite son peuple. Venez expérimenter la puissance de l'Esprit-Saint lors de nos veillées de réveil."
+            }, {
+                img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect fill='%231a3340' width='400' height='300'/><path d='M100 200 Q200 100 300 200' stroke='%23f5d742' stroke-width='3' fill='none' opacity='0.5'/><circle cx='200' cy='150' r='50' fill='%23f5d742' opacity='0.15'/><text x='200' y='280' text-anchor='middle' fill='white' font-size='16' font-family='Segoe UI'>Intercession & Prière</text></svg>",
+                title: "Intercession & Prière",
+                desc: "Une Église qui prie",
+                msgTitle: "La puissance de l'intercession",
+                verse: "« Priez sans cesse. Rendez grâces en toutes choses »",
+                verseRef: "— 1 Thessaloniciens 5:17-18",
+                msgText: "Notre chaîne d'intercession est active chaque jour. Confiez-nous vos fardeaux, nous prions pour vous."
+            }];
 
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toastMsg');
-      let toastTimer = null;
+            let currentSlide = 0;
+            let carouselInterval = null;
 
-      window.showToast = function(message, duration = 3200) {
-        toastMsg.textContent = message;
-        toast.classList.add('show');
-        if (toastTimer) clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => { toast.classList.remove('show'); }, duration);
-      };
+            const imgEl = document.getElementById('carouselImage');
+            const slideTitle = document.getElementById('slideTitle');
+            const slideDesc = document.getElementById('slideDesc');
+            const msgTitle = document.getElementById('msgTitle');
+            const msgVerse = document.getElementById('msgVerse');
+            const msgText = document.getElementById('msgText');
+            const dots = document.querySelectorAll('.dot');
 
-      // Boutons "Nous rejoindre"
-      document.querySelectorAll('#navJoinBtn, #heroJoinBtn, #bigJoinBtn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          showToast('🙏 Bienvenue à E/MERI · Nous vous attendons avec joie !', 3500);
-          if (navigator.vibrate) navigator.vibrate(20);
-        });
-      });
+            function updateSlide(index) {
+                const data = slidesData[index];
+                imgEl.src = data.img;
+                slideTitle.textContent = data.title;
+                slideDesc.textContent = data.desc;
+                msgTitle.textContent = data.msgTitle;
+                msgVerse.innerHTML = `${data.verse} <span>${data.verseRef}</span>`;
+                msgText.textContent = data.msgText;
 
-      // Culte en direct (simulation)
-      document.getElementById('liveBtn').addEventListener('click', function(e) {
-        e.preventDefault();
-        showToast('▶️ Culte en direct · Rejoignez-nous sur notre chaîne YouTube !', 3500);
-      });
+                // Mise à jour des indicateurs
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
 
-      // Formulaire de prière
-      document.getElementById('prayerForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        showToast('🙏 Votre demande de prière a été envoyée ! Nous prions pour vous.', 3800);
-        this.reset();
-      });
+                // Animation du message
+                const msgSlide = document.getElementById('messageSlide');
+                msgSlide.style.animation = 'none';
+                requestAnimationFrame(() => {
+                    msgSlide.style.animation = 'fadeSlide 0.8s ease';
+                });
+            }
 
-      // Navigation douce
-      document.querySelectorAll('nav a, .footer-grid a').forEach(link => {
-        link.addEventListener('click', function(e) {
-          const targetId = this.getAttribute('href');
-          if (targetId && targetId.startsWith('#')) {
-            e.preventDefault();
-            const target = document.querySelector(targetId);
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
-      });
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slidesData.length;
+                updateSlide(currentSlide);
+            }
 
-      // Toast de bienvenue
-      window.addEventListener('load', function() {
-        setTimeout(() => showToast('✝️ Bienvenue à E/MERI · Que Dieu vous bénisse !', 3000), 600);
-      });
+            function startCarousel() {
+                if (carouselInterval) clearInterval(carouselInterval);
+                carouselInterval = setInterval(nextSlide, 5000);
+            }
 
-    })();
-  </script>
+            // Événements sur les indicateurs
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    clearInterval(carouselInterval);
+                    currentSlide = index;
+                    updateSlide(currentSlide);
+                    startCarousel();
+                });
+            });
+
+            // ---- Menu déroulant ----
+            const menuToggle = document.getElementById('menuToggle');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+
+            menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('active');
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            });
+
+            // Fermer le menu si on clique en dehors
+            document.addEventListener('click', function(e) {
+                if (!dropdownMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                    dropdownMenu.classList.remove('active');
+                    const icon = menuToggle.querySelector('i');
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-times');
+                }
+            });
+
+            // Fermer le menu après un clic sur un lien
+            dropdownMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    dropdownMenu.classList.remove('active');
+                    const icon = menuToggle.querySelector('i');
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-times');
+                });
+            });
+
+            // ---- Gestion du scroll pour la bannière ----
+            const banner = document.getElementById('mainBanner');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 80) {
+                    banner.classList.add('scrolled');
+                } else {
+                    banner.classList.remove('scrolled');
+                }
+            });
+
+            // ---- Toast ----
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            let toastTimer = null;
+
+            window.showToast = function(message, duration = 3200) {
+                toastMsg.textContent = message;
+                toast.classList.add('show');
+                if (toastTimer) clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => { toast.classList.remove('show'); }, duration);
+            };
+
+            // ---- Boutons "Nous rejoindre" ----
+            document.querySelectorAll('#navJoinBtn, #heroJoinBtn, #bigJoinBtn, #dropdownJoinBtn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showToast('🙏 Bienvenue à E/MERI · Nous vous attendons avec joie !', 3500);
+                    if (navigator.vibrate) navigator.vibrate(20);
+                });
+            });
+
+            // ---- Culte en direct (simulation) ----
+            document.getElementById('liveBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                showToast('▶️ Culte en direct · Rejoignez-nous sur notre chaîne YouTube !', 3500);
+            });
+
+            // ---- Formulaire de prière ----
+            document.getElementById('prayerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                showToast('🙏 Votre demande de prière a été envoyée ! Nous prions pour vous.', 3800);
+                this.reset();
+            });
+
+            // ---- Navigation douce ----
+            document.querySelectorAll('nav a, .footer-grid a, .dropdown-menu a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId && targetId.startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.querySelector(targetId);
+                        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+            // ---- Initialisation du carrousel et toast de bienvenue ----
+            updateSlide(0);
+            startCarousel();
+
+            window.addEventListener('load', function() {
+                setTimeout(() => showToast('✝️ Bienvenue à E/MERI · Que Dieu vous bénisse !', 3000), 700);
+            });
+
+            // ---- Pour le bouton "Culte en direct" dans le hero (si présent) ----
+            const liveBtn = document.getElementById('liveBtn');
+            if (liveBtn) {
+                liveBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showToast('▶️ Culte en direct · Rejoignez-nous sur notre chaîne YouTube !', 3500);
+                });
+            }
+
+            console.log('🔷 E/MERI · Version Premium avec carrousel et menu déroulant');
+        })();
+    </script>
 </body>
 </html>
